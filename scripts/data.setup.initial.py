@@ -25,67 +25,89 @@ photoFiles = [f for f in listdir(pathPhotos) if isfile(join(pathPhotos, f))]
 
 numFiles = len(photoFiles);
 
-### CROP FILES ################################################################
-
 # load photo and tracing files
 # crop to only have the placenta area
 # make tracing bw 
 ### CROP FILES ################################################################
 
 # load one file
-jj = 1;
-
-#for jj in range(0, numFiles-1):
+for jj in range(0, numFiles-1):
     
-print('--- Working on file '+str(jj+1)+' --------------------------------')
-filenameStem = traceFiles[jj]
-filenameStem = filenameStem.split('.')[0]
-print(filenameStem)
+    print('--- Working on file '+str(jj+1)+' --------------------------------')
+    filenameStem = traceFiles[jj]
+    filenameStem = filenameStem.split('.')[0]
+    print(filenameStem)
 
-# load a tracing
-traceImagePath = os.path.join(pathTraces, traceFiles[jj])
-traceImage = cv2.imread(traceImagePath)
+    # load a tracing
+    traceImagePath = os.path.join(pathTraces, traceFiles[jj])
+    traceImage = cv2.imread(traceImagePath)
 
-# process tracing to get an image of the edges
-traceBW = cv2.cvtColor(traceImage, cv2.COLOR_BGR2GRAY) # change to grayscale
-ret,traceBW = cv2.threshold(traceBW,250,255,cv2.THRESH_BINARY)
-gray = cv2.bilateralFilter(traceBW, 10, 10, 20)
-edged = cv2.Canny(gray, 30, 200)
+    # process tracing to get an image of the edges
+    traceBW = cv2.cvtColor(traceImage, cv2.COLOR_BGR2GRAY) # change to grayscale
+    ret,traceBW = cv2.threshold(traceBW,250,255,cv2.THRESH_BINARY)
+    gray = cv2.bilateralFilter(traceBW, 10, 10, 20)
+    edged = cv2.Canny(gray, 30, 200)
 
-plt.imshow(traceBW, 'gray')
-plt.xticks([]), plt.yticks([])
-plt.show()
+    plt.imshow(traceBW, 'gray')
+    plt.xticks([]), plt.yticks([])
+    plt.show()
 
-# get contours of the edges
-tempImg, contours, hierarchy = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-contours = sorted(contours, key = cv2.contourArea, reverse = True)
-cnt = contours[0]
+    # get contours of the edges
+    tempImg, contours, hierarchy = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours = sorted(contours, key = cv2.contourArea, reverse = True)
+    cnt = contours[0]
 
-# find bounding rectange
-x,y,w,h = cv2.boundingRect(cnt)
+    # find bounding rectange
+    x,y,w,h = cv2.boundingRect(cnt)
 
-# crop
-photoImagePath = os.path.join(pathPhotos, photoFiles[jj])
-photoImage = cv2.imread(photoImagePath)
+    # crop
+    photoImagePath = os.path.join(pathPhotos, photoFiles[jj])
+    photoImage = cv2.imread(photoImagePath)
 
-plt.imshow(photoImage)
-plt.xticks([]), plt.yticks([])
-plt.show()
+    ### MAKE EVERYTHING OUTSIDE THE PLACENTA BLACK ############################
 
-img = cv2.imread(photoImagePath, cv2.IMREAD_GRAYSCALE)
-idx = 0 # The index of the contour that surrounds your object
-mask = np.zeros_like(img) # Create mask where white is what we want, black otherwise
-cv2.drawContours(mask, contours, idx, 255, -1) # Draw filled contour in mask
-out = np.zeros_like(photoImage) # Extract out the object and place into output image
-out = [255, 255, 255]
+    img = cv2.imread(photoImagePath,0) # read the image in grayscale
+    print(img.shape)
+
+    idx = 1 # The index of the contour that surrounds your object
+    mask = np.zeros_like(img) # Create mask where white is what we want, black otherwise
+    print(mask.shape)
+    cv2.drawContours(mask, contours, idx, 255, -1) # Draw filled contour in mask
+
+    img = photoImage.copy()
+    out = np.zeros_like(img) 
+    out[:,:,0][mask==255]=img[:,:,0][mask == 255]
+    out[:,:,1][mask==255]=img[:,:,1][mask == 255]
+    out[:,:,2][mask==255]=img[:,:,2][mask == 255]
+
+    croppedPhoto = out[y:y+h,x:x+w];
+    cv2.imwrite(os.path.join(pathPhotos,filenameStem+'-cropped.png'), croppedPhoto)
+
+    tempImg, contours2, hierarchy = cv2.findContours(traceBW.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    gray = cv2.bilateralFilter(tempImg, 10, 10, 20)
+    print(gray.shape)
+    out = np.zeros_like(gray) 
+    out[mask==255]=gray[mask == 255]
+    croppedTrace = cv2.drawContours(out, [contours2[0]], -1, (0, 255, 0), 10)
+    croppedTrace = out[y:y+h,x:x+w];
+    cv2.imwrite(os.path.join(pathTraces,filenameStem+'-cropped.png'), croppedTrace)
+
+
+# cv2.imshow('Output', mask)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+# out = np.zeros_like(img) # Extract out the object and place into output image
+# out[mask == 255] = img[mask == 255]
+# # Show the output image
+# cv2.imshow('Output', out)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+# cv2.imshow('Output', out)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
 # note to self: have to change each of the RGB values
-
-# Show the output image
-cv2.imshow('Output', out)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
-
 
 # # make outside of the placenta contour completely white
 # # from https://stackoverflow.com/questions/37912928/fill-the-outside-of-contours-opencv
@@ -120,7 +142,6 @@ cv2.destroyAllWindows()
 # # cv2.waitKey(0)
 # # cv2.destroyAllWindows()
 
-
 # # plt.imshow(stencil, 'gray')
 # # plt.xticks([]), plt.yticks([])
 # # plt.show()
@@ -130,9 +151,6 @@ cv2.destroyAllWindows()
 # plt.imshow(result)
 # plt.xticks([]), plt.yticks([])
 # plt.show()
-
-#croppedPhoto = photoImage[y:y+h,x:x+w];
-#cv2.imwrite(os.path.join(pathPhotos,filenameStem+'-cropped.png'), croppedPhoto)
 
 #tempImg, contours2, hierarchy = cv2.findContours(traceBW.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 #gray = cv2.bilateralFilter(tempImg, 10, 10, 20)
