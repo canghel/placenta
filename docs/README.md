@@ -10,7 +10,11 @@ Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://j
 
 The raw placenta images we began with are pairs of photos and manually traced arteries and veins for each placenta.
 
-<img align="left" src="img/preprocessing_raw_photo.png" width="200" alt="hi" class="inline"/>  <img hspace="20" /> <kbd><img align="left" src="img/preprocessing_raw_trace.png" width="200" alt="hi" class="inline"/></kbd>  
+| [![VideoBlocks](https://d1ow200m9i3wyh.cloudfront.net/img/assets/videoblocks/images/logo.png)](http://videoblocks.com)  | [![AudioBlocks](https://dtyn3c8zjrx01.cloudfront.net/img/assets/audioblocks/images/logo.png)](http://audioblocks.com) | 
+|:---:|:---:|
+| <img align="left" src="img/preprocessing_raw_photo.png" width="200" alt="hi" class="inline"/>  | <img align="left" src="img/preprocessing_raw_photo.png" width="200" alt="hi" class="inline"/> |
+
+ <img hspace="20" /> <kbd><img align="left" src="img/preprocessing_raw_trace.png" width="200" alt="hi" class="inline"/></kbd>  
 <br/><br/><br/><br/><br/><br/><br/><br/> 
 
 The first step is to adjust the background, crop, and convert the trace to black and white.  
@@ -18,9 +22,7 @@ The first step is to adjust the background, crop, and convert the trace to black
 <img align="left" src="img/preprocessing_white_and_crop_photo.png" width="200" alt="hi" class="inline"/>  <img hspace="20" /> <kbd><img src="img/preprocessing_white_and_crop_trace.png" width="200" alt="hi" class="inline"/></kbd> 
 <br/><br/><br/><br/><br/><br/><br/><br/> 
 
-| [![VideoBlocks](https://d1ow200m9i3wyh.cloudfront.net/img/assets/videoblocks/images/logo.png)](http://videoblocks.com)  | [![AudioBlocks](https://dtyn3c8zjrx01.cloudfront.net/img/assets/audioblocks/images/logo.png)](http://audioblocks.com) | [![GraphicStock](http://www.graphicstock.com/images/logo.jpg)](http://graphicstock.com) |
-|:---:|:---:|:---:|
-| http://videoblocks.com | http://audioblocks.com | http://graphicstock.com |
+
 
 <!-- ```markdown
 Syntax highlighted code block
