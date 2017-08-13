@@ -1,8 +1,16 @@
 ## Introduction
 
-The following is the documentation of the code for the imaging portion of our project.
+The overaching goals of our work are to:
+*    distinguish the features of the placental chorionic surface vascular network which are associated with increased risk of Autism Spectrum Disorder (ASD), and *    explore the effect of these features on oxygen transfer efficiency.
 
-For a full discussion of  please see, please see (cite article here).
+Please see (cite article here) for the full discussion.
+
+As a prerequisite to our first aim, we must extract the vascular network structure from photo images of the placenta.  The images here are taken either
+at delivery or upon pathological evaluation and are noisy due to the complexity and variation of the tissue itself (e.g. as compared to retinal vessels, say), as well as to the variation in photographic equiment, lighting, etc.  Manual extraction of the vascular network is time-consuming and expensive.  Thus, our goal here is to
+
+*    improve the automatic extraction of the vascular network structure. 
+
+The following is the documentation of the code for this imaging portion of our project.
  
 <!-- You can use the [editor on GitHub](https://github.com/canghel/placenta/edit/master/docs/README.md) to maintain and preview the content for your website in Markdown files.
 
