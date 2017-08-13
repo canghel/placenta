@@ -10,9 +10,8 @@ Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://j
 
 The raw placenta images we began with are pairs of photos and manually traced arteries and veins for each placenta.
 
-<img align="left" src="img/preprocessing_raw_photo.png" width="200" alt="hi" class="inline"/>  <img hspace="20" /> <kbd><img align="left" src="img/preprocessing_raw_trace.png" width="200" alt="hi" class="inline"/></kbd>
+<img align="left" src="img/preprocessing_raw_photo.png" width="200" alt="hi" class="inline"/>  <img hspace="20" /> <kbd><img align="left" src="img/preprocessing_raw_trace.png" width="200" alt="hi" class="inline"/></kbd>  
 <br><br>
-
 
 The first step is to adjust the background, crop, and convert the trace to black and white.  
 <br><br>
