@@ -10,7 +10,7 @@ Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://j
 
 ## Data pre-processing
 
-### NCS Dataset
+### National Children's Study (NCS) Dataset
 
 The raw placenta images we began with are pairs of photos and manually traced arteries and veins for each placenta.
 
@@ -20,7 +20,7 @@ The first step is to adjust the background, crop, and convert the trace to black
 
 <img align="center" src="img/preprocessing_white_and_crop_photo.png" height="150" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/preprocessing_white_and_crop_trace.png" height="150" alt="hi" class="inline"/> 
 
-## Software specifications
+## Software Specifications
 
 For preprocessing, we used the following:
 
@@ -29,7 +29,7 @@ For preprocessing, we used the following:
 
 ## Authors
 
-The imaging portion of the project was led by Jen-Mei Chang, Karamatou (Kara) Yacoubou Djima, and Catalina Anghel, in collaboration with 
+The imaging portion of the project was led by Jen-Mei Chang, Karamatou (Kara) Yacoubou Djima, and Catalina Anghel, with 
 Kellie Archer, Amy Cochran, Anca Radulescu, Rebecca Turner, Lan Zhong and with the support of developmental pathologist Dr. Carolyn Salafia.
 
 (Other authors as well, involved in data collection?)
@@ -38,7 +38,7 @@ Kellie Archer, Amy Cochran, Anca Radulescu, Rebecca Turner, Lan Zhong and with t
 
 We gratefully acknowledge the support of the following organizations and persons.  
 
-*	The project was part of the [MBI Women Advancing Mathematical Biology](https://mbi.osu.edu/event/?id=1067 ): Understanding Complex Biological Systems with Mathematics 2017 Workshop.  The Mathematical Biosciences Institute sponsored the workshop, with support from Association for Women in Mathematics, The Society for Mathematical Biology, and Microsoft Research.
+*	The project was part of the [MBI Women Advancing Mathematical Biology: Understanding Complex Biological Systems with Mathematics 2017 Workshop](https://mbi.osu.edu/event/?id=1067 ).  The Mathematical Biosciences Institute sponsored the workshop, with support from Association for Women in Mathematics, The Society for Mathematical Biology, and Microsoft Research.
 
 *   We received biology expertise and data support from Dr. Carolyn Salafia, Ruchit Shah, Dr. George Merz, and Dr. Richard K. Miller.
 
