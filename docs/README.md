@@ -1,8 +1,12 @@
-## Background
+## Introduction
 
-You can use the [editor on GitHub](https://github.com/canghel/placenta/edit/master/docs/README.md) to maintain and preview the content for your website in Markdown files.
+The following is the documentation of the code for the imaging portion of our project.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+For a full discussion of the project please see, please see (cite article here).
+ 
+<!-- You can use the [editor on GitHub](https://github.com/canghel/placenta/edit/master/docs/README.md) to maintain and preview the content for your website in Markdown files.
+
+Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files. -->
 
 ## Data pre-processing
 
@@ -12,9 +16,18 @@ The raw placenta images we began with are pairs of photos and manually traced ar
 
 <img align="center" src="img/preprocessing_raw_photo.png" height="150" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png" height="150" alt=""  class="inline"/>  <img align="center" src="img/preprocessing_raw_trace.png" height="150" alt="hi" class="inline"/> 
 
-The first step is to adjust the background, crop, and convert the trace to black and white.  
+The first step is to adjust the background, crop, and convert the trace to black and white, using the script [`data.setup.initial.py`](https://github.com/canghel/placenta/blob/master/scripts/data.setup.initial.py ).
 
 <img align="center" src="img/preprocessing_white_and_crop_photo.png" height="150" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/preprocessing_white_and_crop_trace.png" height="150" alt="hi" class="inline"/> 
+
+## Software specifications
+
+For preprocessing, we used the following:
+
+*	Python 3.6.1 (v3.6.1:69c0db5, Mar 21 2017, 18:41:36) [MSC v.1900 64 bit (AMD64)] on win32
+*   MATLAB (version, etc.)
+
+
 
 <!-- ```markdown
 Syntax highlighted code block
