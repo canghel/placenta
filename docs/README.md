@@ -14,7 +14,7 @@ The raw placenta images we began with are pairs of photos and manually traced ar
 
 The first step is to adjust the background, crop, and convert the trace to black and white.  
 
-<img align="center" src="img/preprocessing_white_and_crop_photo.png" height="150" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  < img align="center" src="img/preprocessing_white_and_crop_trace.png" height="150" alt="hi" class="inline"/> 
+<img align="center" src="img/preprocessing_white_and_crop_photo.png" height="150" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/preprocessing_white_and_crop_trace.png" height="150" alt="hi" class="inline"/> 
 
 <!-- ```markdown
 Syntax highlighted code block
