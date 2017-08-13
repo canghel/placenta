@@ -3,7 +3,7 @@
 The overaching goals of our work are to:
 *    distinguish the features of the placental chorionic surface vascular network which are associated with increased risk of Autism Spectrum Disorder (ASD), and
 
-*    explore the effect of these features on oxygen transfer efficiency.
+*    explore the effect of these features on function, in particular on oxygen transfer efficiency.
 
 Please see (cite article here) for the full discussion.
 
@@ -18,7 +18,7 @@ The following is the documentation of the code for this imaging portion of our p
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files. -->
 
-## Data pre-processing
+## Data Pre-processing
 
 ### National Children's Study (NCS) Dataset
 
