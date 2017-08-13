@@ -1,7 +1,9 @@
 ## Introduction
 
 The overaching goals of our work are to:
-*    distinguish the features of the placental chorionic surface vascular network which are associated with increased risk of Autism Spectrum Disorder (ASD), and *    explore the effect of these features on oxygen transfer efficiency.
+*    distinguish the features of the placental chorionic surface vascular network which are associated with increased risk of Autism Spectrum Disorder (ASD), and
+
+*    explore the effect of these features on oxygen transfer efficiency.
 
 Please see (cite article here) for the full discussion.
 
@@ -33,6 +35,7 @@ The first step is to adjust the background, crop, and convert the trace to black
 For preprocessing, we used the following:
 
 *	Python 3.6.1 (v3.6.1:69c0db5, Mar 21 2017, 18:41:36) [MSC v.1900 64 bit (AMD64)] on win32
+
 *   MATLAB (version, etc.)
 
 ## Authors
