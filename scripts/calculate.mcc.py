@@ -1,4 +1,5 @@
 # mcc coefficient between true and fake B
+# Kara already has a Matlab function to do this
 
 ### PREAMBLE ##################################################################
 
@@ -26,6 +27,8 @@ mccResults = []
 mccResultsCheck = []
 for jj in range(0, numFiles):
 	print('--- Working on file '+str(jj+1)+' --------------------------------')
+	
+	# read in the images
 	fakeImagePath = os.path.join(pathResults, fakeFiles[jj])
 	fakeImage = scipy.misc.imread(fakeImagePath, mode="L");
 	realImagePath = os.path.join(pathResults, realFiles[jj])
@@ -34,10 +37,15 @@ for jj in range(0, numFiles):
 	fakeImage = cv2.imread(fakeImagePath, cv2.IMREAD_GRAYSCALE);
 	realImagePath = os.path.join(pathResults, realFiles[jj]);
 	realImage = cv2.imread(realImagePath, cv2.IMREAD_GRAYSCALE);
+	
+	## checked where to have a cutoff for black and white
+	## REVISIT: still not sure why initial (real) images weren't completely BW?
 	# hist, bins = np.histogram(fakeImage.ravel(), 256, [0,256])
 	# plt.hist(img.ravel(),256,[0,256]);
 	fakeThresh, fakeImageBW = cv2.threshold(fakeImage, 250, 255, cv2.THRESH_BINARY)
 	realThresh, realImageBW = cv2.threshold(realImage, 254, 255, cv2.THRESH_BINARY)
+
+	# binarize the images
 	fakeImageBW[fakeImageBW==0] = 1
 	fakeImageBW[fakeImageBW==255] = 0;
 	realImageBW[realImageBW==0] = 1;
@@ -47,8 +55,10 @@ for jj in range(0, numFiles):
 	realImageBin = lb.transform(realImageBW)
 	lb.fit(fakeImageBW)
 	fakeImageBin = lb.transform(fakeImageBW)
+
+	# calculate MCC 
 	mccResults.append(matthews_corrcoef(realImageBin.ravel(), fakeImageBin.ravel()))
-	#
+	# check manually
 	TP = len(np.intersect1d(np.where(realImageBW.ravel()==1), np.where(fakeImageBW.ravel()==1)));
 	TN = len(np.intersect1d(np.where(realImageBW.ravel()==0), np.where(fakeImageBW.ravel()==0)));
 	FP = len(np.intersect1d(np.where(realImageBW.ravel()==0), np.where(fakeImageBW.ravel()==1)));
