@@ -1,34 +1,40 @@
 ## Introduction
 
 The overaching goals of our work are to:
+
 *    distinguish the features of the placental chorionic surface vascular network which are associated with increased risk of Autism Spectrum Disorder (ASD), and
 
 *    explore the effect of these features on function, in particular on oxygen transfer efficiency.
 
 Please see (cite article here) for the full discussion.
 
-As a prerequisite to our first aim, we must extract the vascular network structure from photo images of the placenta.  The images here are taken either
-at delivery or upon pathological evaluation and are noisy due to the complexity and variation of the tissue itself (e.g. as compared to retinal vessels, say), as well as to the variation in photographic equiment, lighting, etc.  Manual extraction of the vascular network is time-consuming and expensive.  Thus, our goal here is to
+As a prerequisite to our first aim, we must extract the vascular network structure from photo images of the placenta.  The images here are taken either at delivery or upon pathological evaluation and are noisy due to the complexity and variation of the tissue itself (e.g. as compared to retinal vessels, say), as well as to the variation in photographic equiment, lighting, etc.  Manual extraction of the vascular network is time-consuming and expensive.  Thus, our goal here is to
 
 *    improve the automatic extraction of the vascular network structure. 
 
 The following is the documentation of the code for this imaging portion of our project.
  
-<!-- You can use the [editor on GitHub](https://github.com/canghel/placenta/edit/master/docs/README.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files. -->
 
 ## Data Pre-processing
 
 ### National Children's Study (NCS) Dataset
 
-The raw placenta images we began with are pairs of photos and manually traced arteries and veins for each placenta.
+The National Children's Study (NCS) consists participants assumed to be representative of the general population, with unknown risk for autism.  The placentas were photographed and the vasculature manually traced using consistent protocols described in [1](#ref-1). We received photographs of placentas already processed to remove glare and/or increase contrast. Thus, we begin with pairs of images of photos and traces for each placenta as shown below.
 
 <img align="center" src="img/preprocessing_raw_photo.png" height="150" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png" height="150" alt=""  class="inline"/>  <img align="center" src="img/preprocessing_raw_trace.png" height="150" alt="hi" class="inline"/> 
 
 The first step is to adjust the background, crop, and convert the trace to black and white, using the script [`data.setup.initial.py`](https://github.com/canghel/placenta/blob/master/scripts/data.setup.initial.py ).
 
 <img align="center" src="img/preprocessing_white_and_crop_photo.png" height="150" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/preprocessing_white_and_crop_trace.png" height="150" alt="hi" class="inline"/> 
+
+We crop both images into non-overlapping squares of 256 by 256 pixels, to be passed into the neural network. The salient feature of the images is the vasculature, which does not have an up-down or left-right orientation. Thus we augment the training dataset by rotating the images by 0&deg;, 90&deg;, 180&deg; and 270&deg;. An internal option to the neural network also flips them horizontally.  The function to crop and rotate the images is [`cropandrotate.m`](https://github.com/canghel/placenta/blob/master/scripts/cropandrotate.m).  
+
+<img align="center" src="img/preprocessing_crop_photo_Angle_0.png" height="75" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_photo_Angle_90.png" height="75" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_photo_Angle_180.png" height="75" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_photo_Angle_270.png" height="75" alt="hi" class="inline"/> \\
+<img align="center" src="img/preprocessing_crop_trace_Angle_0.png" height="75" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_trace_Angle_90.png" height="75" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_trace_Angle_180.png" height="75" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_trace_Angle_270.png" height="75" alt="hi" class="inline"/> 
+
+## References 
+
+1. <a id="ref-1"></a> J.-M. Chang, H. Zeng, R. Han, Y.-M. Chang, R. Shah, C. Salafia, C. Newschaffer, R. Miller, P. Katzman, J. Moye, M. Fallin, C. Walker, L. Croen, "Autism risk classification using placental chorionic surface vascular network features," _Accepted for publication in BMC Medical Informatics and Decision Making_, July 2017.  
 
 ## Software Specifications
 
@@ -40,8 +46,7 @@ For preprocessing, we used the following:
 
 ## Authors
 
-The imaging portion of the project was led by Jen-Mei Chang, Karamatou (Kara) Yacoubou Djima, and Catalina Anghel, with 
-Kellie Archer, Amy Cochran, Anca Radulescu, Rebecca Turner, Lan Zhong and with the support of developmental pathologist Dr. Carolyn Salafia.
+The imaging portion of the project was led by Jen-Mei Chang, Karamatou (Kara) Yacoubou Djima, and Catalina Anghel, with Kellie Archer, Amy Cochran, Anca Radulescu, Rebecca Turner, Lan Zhong and with the support of developmental pathologist Dr. Carolyn Salafia.
 
 (Other authors as well, involved in data collection?)
 
@@ -54,6 +59,7 @@ We gratefully acknowledge the support of the following organizations and persons
 *   We received biology expertise and data support from Dr. Carolyn Salafia, Ruchit Shah, Dr. George Merz, and Dr. Richard K. Miller.
 
 *	We thank the medical professionals involved in the National Children's Study (NCS), and most importantly the participants who donated their placentas.
+
 
 <!-- ```markdown
 Syntax highlighted code block
