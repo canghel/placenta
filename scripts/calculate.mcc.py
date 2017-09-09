@@ -17,13 +17,15 @@ import numpy as np
 
 ### PATHS #####################################################################
 
-#pathResults = "../../../pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/2017-08-20-test_latest/images/"
+#pathFake = "../../../pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/2017-09-03-test_latest/images/"
+#pathReal = pathFake;
 ## get list of fake files and of real files
+#fakeFiles = fnmatch.filter(os.listdir(pathFake), '*fake_B.png');
 #fakeFiles = [ff for file in sorted(os.listdir(pathResults)) for ff in re.findall("*fake_B.png", file)];
 #realFiles = [re.sub("fake_B", "real_B", x) for x in fakeFiles]
 
-pathReal = "/home/Documents/placenta/data/Reconstructed/CroppedTrace/";
-pathFake = "/home/Documents/placenta/data/Reconstructed/CroppedAverage/"
+pathReal = "/home/Documents/placenta/data/testTraces";
+pathFake = "/home/Documents/placenta/data/2017-09-08-Reconstructed/CroppedAverage/"
 fakeFiles = fnmatch.filter(os.listdir(pathFake), '*_recon_avg.png');
 realFiles = [re.sub("_recon_avg.png", "", x) for x in fakeFiles]
 
