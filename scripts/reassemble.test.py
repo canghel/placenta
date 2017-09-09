@@ -39,8 +39,8 @@ for jj in range(0, numFullTest):
 	traceImage = cv2.imread(os.path.join(pathTraces, fileStem[jj]))
 
 	# number of rows and number of columns
-	nofr = np.int(np.floor(traceImage.shape[0]/256));
-	nofc = np.int(np.floor(traceImage.shape[1]/256));
+	nofr = np.int(np.ceil(traceImage.shape[0]/256));
+	nofc = np.int(np.ceil(traceImage.shape[1]/256));
 
 	cv2.imwrite(os.path.join(pathOutput, 'CroppedTrace',  fileStem[jj]), traceImage[0:nofr*256, 0:nofc*256,:]);
 
@@ -48,7 +48,7 @@ for jj in range(0, numFullTest):
 	for aa in range(0, 4):
 		angle = angles[aa];
 		# create blank (white) image 
-		output = np.ones_like(traceImage)*255
+		output = np.ones((nofr*256, nofc*256, 3))*255
 
 		# loop over rows and columns
 		for rr in range(0, nofr):
@@ -81,7 +81,7 @@ for jj in range(0, numFullTest):
 
 		# keep a record of the average trace
 		# easier to divide each by 4 than average at the end
-		temp = cv2.threshold(output, 250, 255, cv2.THRESH_BINARY);
+		# temp = cv2.threshold(output, 250, 255, cv2.THRESH_BINARY);
 		if (angle=='Angle_0'):
 			averageTrace = output/4;
 		else:
@@ -91,4 +91,4 @@ for jj in range(0, numFullTest):
 	averageTrace = np.around(averageTrace).astype(int)
 	averageFile = fileStem[jj]+'_recon_avg.png'
 	cv2.imwrite(os.path.join(pathOutput, 'Average', averageFile), averageTrace);
-	cv2.imwrite(os.path.join(pathOutput, 'CroppedAverage', averageFile), averageTrace[0:nofr*256, 0:nofc*256,:]);
+	cv2.imwrite(os.path.join(pathOutput, 'CroppedAverage', averageFile), averageTrace[0:traceImage.shape[0], 0:traceImage.shape[1],:]);
