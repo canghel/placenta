@@ -3,29 +3,35 @@
 
 ### PREAMBLE ##################################################################
 
-from sklearn.metrics import matthews_corrcoef
+# images
 import cv2
+
+# input output and string matching
 import os
 from os import listdir
 from os.path import isfile, join
 import re
 import fnmatch
-from sklearn import preprocessing
 
+# useful math functions
+from sklearn.metrics import matthews_corrcoef
+from sklearn import preprocessing
 import scipy.misc
 import numpy as np
 
+# plotting things
+import matplotlib.pyplot as plt
+from matplotlib import cm
+import plotly.plotly as py
+# not quite sure what pandas are yet
+import pandas as pd
+
 ### PATHS #####################################################################
 
-#pathFake = "../../../pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/2017-09-03-test_latest/images/"
-#pathReal = pathFake;
-## get list of fake files and of real files
-#fakeFiles = fnmatch.filter(os.listdir(pathFake), '*fake_B.png');
-#fakeFiles = [ff for file in sorted(os.listdir(pathResults)) for ff in re.findall("*fake_B.png", file)];
-#realFiles = [re.sub("fake_B", "real_B", x) for x in fakeFiles]
-
-pathReal = "/home/Documents/placenta/data/testTraces";
-pathFake = "/home/Documents/placenta/data/2017-09-08-Reconstructed/CroppedAverage/"
+# pathReal = "/home/Documents/placenta/data/testTraces";
+# pathFake = "/home/Documents/placenta/data/Reconstructed/CroppedAverage/"
+pathReal = "/home/Documents/placenta/data/ReconstructedVal/CroppedTrace/";
+pathFake = "/home/Documents/placenta/data/ReconstructedVal/CroppedAverage/"
 fakeFiles = fnmatch.filter(os.listdir(pathFake), '*_recon_avg.png');
 realFiles = [re.sub("_recon_avg.png", "", x) for x in fakeFiles]
 
@@ -45,10 +51,7 @@ for jj in range(0, numFiles):
 	realImagePath = os.path.join(pathReal, realFiles[jj]);
 	realImage = cv2.imread(realImagePath, cv2.IMREAD_GRAYSCALE);
 	
-	## checked where to have a cutoff for black and white
-	## REVISIT: still not sure why initial (real) images weren't completely BW?
-	# hist, bins = np.histogram(fakeImage.ravel(), 256, [0,256])
-	# plt.hist(img.ravel(),256,[0,256]);
+	# checked where to have a cutoff for black and white
 	fakeThresh, fakeImageBW = cv2.threshold(fakeImage, 250, 255, cv2.THRESH_BINARY)
 	realThresh, realImageBW = cv2.threshold(realImage, 254, 255, cv2.THRESH_BINARY)
 
@@ -72,3 +75,69 @@ for jj in range(0, numFiles):
 	FN = len(np.intersect1d(np.where(realImageBW.ravel()==1), np.where(fakeImageBW.ravel()==0)));
 	mcc = (TP*TN-FP*FN)/np.sqrt(((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN))+0.0);
 	mccResultsCheck.append(mcc); 
+
+### SAVE RESULTS TO FILE ######################################################
+
+np.savetxt('/home/Documents/placenta/data/testMCCValues.txt', mccResults)
+
+### PLOT A HISTOGRAM OF RESULTS ###############################################
+
+plt.figure(figsize=(12, 12))  
+  
+ax = plt.subplot(111)  
+ax.spines["top"].set_visible(False)  
+ax.spines["right"].set_visible(False)  
+  
+ax.get_xaxis().tick_bottom()  
+ax.get_yaxis().tick_left()  
+  
+plt.xticks(fontsize=18) 
+plt.yticks(fontsize=18)  
+  
+plt.xlabel("MCC Value", fontsize=22)  
+plt.ylabel("Frequency", fontsize=22)  
+  
+plt.hist(mccResults, color="#3F5D7D", edgecolor="k")  
+
+fig = plt.gcf()
+fig.savefig('/home/Documents/placenta/data/testMCCValuesHist.png', bbox_inches="tight")
+plt.close(fig)
+
+# # plot a histogram of mccResults
+# plt.hist(mccResults)
+# plt.title("MCC Values for 42 Test Placenta Images")
+# plt.xlabel("Value")
+# plt.ylabel("Frequency")
+# fig = plt.gcf()
+# fig.savefig('/home/Documents/placenta/data/testMCCValuesHist.png')
+
+
+# ### PLOT A BOXPLOT OF RESULTS #################################################
+
+# # ooh, I should really do train, test, validation...
+
+# # initialize dataframe
+# df = pd.DataFrame({'MCC': mccResults, 'group': 'Test dataset'})
+# group = 'group'
+# column = 'MCC'
+# grouped = df.groupby(group)
+
+# names, vals, xs = [], [] ,[]
+
+# for i, (name, subdf) in enumerate(grouped):
+#     names.append(name)
+#     vals.append(subdf[column].tolist())
+#     xs.append(np.random.normal(i+1, 0.04, subdf.shape[0]))
+
+# plt.figure(figsize=(12, 12))  
+# plt.boxplot(vals, labels=names)
+# plt.xticks(fontsize=18) 
+# plt.yticks(fontsize=18)  
+# ngroup = len(vals)
+# clevels = np.linspace(0., 1., ngroup)
+
+# for x, val, clevel in zip(xs, vals, clevels):
+#     plt.scatter(x, val, c=cm.prism(clevel), alpha=0.4)
+
+# fig = plt.gcf()
+# fig.savefig('/home/Documents/placenta/data/testMCCValuesBoxPlot.png', bbox_inches="tight")
