@@ -56,7 +56,7 @@ We tested a different options for number of iterations and `loadSize` and `fineS
 
 To provide results consistent with previous studies [[2](#ref-Almoussa2011), [4](#ref-Cheng2013)], we needed to recover the full placental trace from the 256 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\times" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\times" title="\times" /></a> 256 cGAN-reconstucted trace images. This was done simply by "gluing" the smaller images together, using the script [`reassemble.test.py`](https://github.com/canghel/placenta/blob/master/scripts/reassemble.test.py).  We plan to modify this in the future, to obtain smoother reconstructions.
 
-Below are reconstructions of three placentas from the test set.  From left to right, the images are for the reconstructions with minimum, approximate mean, and maximum Matthews Correlation Coefficient values (see below).  From top to bottom are the photograph, the reconstruction, and the manual ground truth trace. 
+Below are reconstructions of three placentas from the test set.  From left to right, the images are for the reconstructions with minimum, approximate mean, and maximum Matthews Correlation Coefficient values (see following section).  From top to bottom are the photograph, the reconstruction, and the manual ground truth trace. 
 
 
 <img align="center" src="img/Full-Reconstructions/worst_photo_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_photo_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_photo_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="200" class="inline"/> 
@@ -90,7 +90,7 @@ For the current work, the MCC value for the 42 placentas in the testing set was 
 
 ## References 
 
-1. <a id="ref-Chang2017"></a> J.-M. Chang, H. Zeng, R. Han, Y.-M. Chang, R. Shah, C. Salafia, C. Newschaffer, R. Miller, P. Katzman, J. Moye, M. Fallin, C. Walker, L. Croen, "Autism risk classification using placental chorionic surface vascular network features," _Accepted for publication in BMC Medical Informatics and Decision Making_, (2017).  
+1. <a id="ref-Chang2017"></a> J.-M. Chang, H. Zeng, R. Han, Y.-M. Chang, R. Shah, C. Salafia, C. Newschaffer, R. Miller, P. Katzman, J. Moye, M. Fallin, C. Walker, L. Croen, "Autism risk classification using placental chorionic surface vascular network features," _Accepted for publication in BMC Medical Informatics and Decision Making_ (2017).  
 
 2. <a id="ref-Almoussa2011"></a> N. Almoussa, B. Dutra, B. Lampe, P. Getreuer, T. Wittman, C. Salafia, L. Vese. ["Automated Vasculature Extraction from Placenta Images,"](https://www.spiedigitallibrary.org/conference-proceedings-of-spie/7962/1/Automated-vasculature-extraction-from-placenta-images/10.1117/12.878343.short) _Proceedings of SPIE Medical Imaging Conference_ 7962 (2011).
 
