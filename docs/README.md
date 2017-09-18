@@ -76,7 +76,7 @@ The results of this preliminary work are very promising. We used the Matthews Co
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=MCC&space;=&space;\frac{TP&space;\times&space;TN&space;-&space;FP&space;\times&space;FN}{\sqrt{(TP&space;&plus;&space;FP)(TP&space;&plus;&space;FN)(TN&space;&plus;&space;FP)(TN&space;&plus;&space;FN)}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?MCC&space;=&space;\frac{TP&space;\times&space;TN&space;-&space;FP&space;\times&space;FN}{\sqrt{(TP&space;&plus;&space;FP)(TP&space;&plus;&space;FN)(TN&space;&plus;&space;FP)(TN&space;&plus;&space;FN)}}" title="MCC = \frac{TP \times TN - FP \times FN}{\sqrt{(TP + FP)(TP + FN)(TN + FP)(TN + FN)}}" /></a>
 
-in comparing the cGAN-reconstructed trace against the ground-truth manual trace.  In previous work [[2](#ref-Almoussa2011), [4](#ref-Cheng2013)], the MCC for a similar dataset (the University of North Carolina Pregnancy, Infection, and Nutrition Study) of 16 placentas was 0.4 or below.  In [[4](#ref-Cheng2013)], a figure compares box plots of the MCC values using the NN approach of [[2](#ref-Almoussa2011)] and the best MCC value for the multiscale-filter and the enhanced curvilinear filter methods.
+in comparing the cGAN-reconstructed trace against the ground-truth manual trace.  In previous work [[2](#ref-Almoussa2011), [4](#ref-Cheng2013)], the MCC for a similar dataset (the University of North Carolina Pregnancy, Infection, and Nutrition Study of 16 placentas was 0.4 or below.  In [[4](#ref-Cheng2013)], a figure compares box plots of the MCC values using the NN approach of [[2](#ref-Almoussa2011)] and the best MCC value for the multiscale-filter and the enhanced curvilinear filter methods.
 
 <img align="center" src="img/mccPlots/results_multiscale_and_nn.png" height="250"  class="inline"/>
 
@@ -117,7 +117,12 @@ The details for the cGAN are as follows:
 
 ## Authors
 
-The imaging portion of the project was led by Jen-Mei Chang, Karamatou (Kara) Yacoubou Djima, and Catalina Anghel, with Kellie Archer, Amy Cochran, Anca Radulescu, Rebecca Turner, Lan Zhong and with the support of developmental pathologist Dr. Carolyn Salafia.
+The imaging portion of the project was led by Jen-Mei Chang, Karamatou (Kara) Yacoubou Djima, and Catalina Anghel, with Kellie Archer, Amy Cochran, Anca Radulescu, Rebecca Turner, Lan Zhong.
+
+Dr. Carolyn Salafia and Ruchit Shah from [Placental Analytics, LLC](http://www.placentalanalytics.com/) provided the data, extensive biological knowledge and research support.
+
+For data and medical content, the authors are Craig Newschaffer, Drexel University; Richard Miller, University of Rochester, NIH National Children’s Study Placenta Consortium; Philip J. Katzman, University of Rochester, NIH National Children’s Study Placenta Consortium; Jack Moye, NICHD; Margaret Fallin, Johns Hopkins University; Cheryl K. Walker, UC Davis; Lisa Croen, Kaiser Permenante Division of Research.
+
 
 ## Acknowledgements
 
@@ -125,6 +130,6 @@ We gratefully acknowledge the support of the following organizations and persons
 
 *	The project was part of the [MBI Women Advancing Mathematical Biology: Understanding Complex Biological Systems with Mathematics 2017 Workshop](https://mbi.osu.edu/event/?id=1067 ).  The Mathematical Biosciences Institute sponsored the workshop, with support from Association for Women in Mathematics, The Society for Mathematical Biology, and Microsoft Research.
 
-*   We received biology expertise and data support from Dr. Carolyn Salafia, Ruchit Shah, Dr. George Merz, and Dr. Richard K. Miller.
+*   We received biology expertise and support from Dr. Carolyn Salafia, Ruchit Shah, Dr. George Merz, and Dr. Richard K. Miller.
 
 *	We thank the medical professionals involved in the National Children's Study (NCS), and most importantly the participants who donated their placentas.
