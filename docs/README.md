@@ -59,13 +59,13 @@ To provide results consistent with previous studies [[2](#ref-Almoussa2011), [4]
 Below are reconstructions of three placentas from the test set.  From left to right, the images are for the reconstructions with minimum, approximate mean, and maximum Matthews Correlation Coefficient values (see below).  From top to bottom are the photograph, the reconstruction, and the manual ground truth trace. 
 
 
-<img align="center" src="img/Full-Reconstructions/worst_photo_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="200" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_photo_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="200" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_photo_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="200" class="inline"/> 
+<img align="center" src="img/Full-Reconstructions/worst_photo_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_photo_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_photo_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="200" class="inline"/> 
 
 
-<img align="center" src="img/Full-Reconstructions/worst_recon_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png_recon_avg.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="200" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_recon_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png_recon_avg.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="200" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_recon_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png_recon_avg.png" height="200"  class="inline"/> 
+<img align="center" src="img/Full-Reconstructions/worst_recon_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png_recon_avg.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_recon_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png_recon_avg.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_recon_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png_recon_avg.png" height="200"  class="inline"/> 
 
 
-<img align="center" src="img/Full-Reconstructions/worst_trace_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="200" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_trace_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="200" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_trace_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="200"  class="inline"/> 
+<img align="center" src="img/Full-Reconstructions/worst_trace_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_trace_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_trace_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="200"  class="inline"/> 
 
 
 ## Results
@@ -109,7 +109,7 @@ For preprocessing, we used the following:
 
 The details for the cGAN are as follows:
 
-* 	Code: pyTorch pix2pix [`https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix`](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) (Retrieved July 19, 2017) from [3](#ref-Isola2016)
+* 	Code: pyTorch pix2pix [`https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix`](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) (Retrieved July 19, 2017) from [[3](#ref-Isola2016)]
 
 *   Intel Xeon Processor (10M Cache, 3.50 Ghz) CentOS 6.5 64bit with NVIDIA GeForce GTX 1080 GPU. 
 
