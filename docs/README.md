@@ -17,7 +17,7 @@ The following is the documentation of the code for the neural network portion of
 
 ## Data Pre-processing
 
-The National Children's Study (NCS) dataset consists of participants assumed to be representative of the general population, with unknown risk for autism.  The placentas were photographed and the vasculature manually traced using consistent protocols described in [1](#ref-Chang2017). We received photographs of placentas already processed to remove glare and/or increase contrast. Thus, we begin with pairs of images of photos and traces for each placenta as shown below.
+The National Children's Study (NCS) dataset consists of participants assumed to be representative of the general population, with unknown risk for autism.  The placentas were photographed and the vasculature manually traced using consistent protocols described in `[`[1](#ref-Chang2017)`]`. We received photographs of placentas already processed to remove glare and/or increase contrast. Thus, we begin with pairs of images of photos and traces for each placenta as shown below.
 
 <img align="center" src="img/preprocessing_raw_photo.png" height="150" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png" height="150" alt=""  class="inline"/>  <img align="center" src="img/preprocessing_raw_trace.png" height="150" alt="hi" class="inline"/> 
 
@@ -34,36 +34,11 @@ We crop the images into non-overlapping squares of 256 by 256 pixels, to be pass
 
 ## Conditional Generative Adversarial Network (cGAN)
 
-Recent advances in both computational resources and in deep learning research motivated us to revisit the neural network approach to blood vessel extraction from a new perspective.  The previous approach [2](#Almoussa2011) classified pixels of the image as "vessel" or "non-vessel" based of calculated features.  
+Recent advances in both computational resources and in deep learning research motivated us to revisit the neural network approach to blood vessel extraction from a new perspective.  The previous approach `[`[2](#Almoussa2011)`]` classified pixels of the image as "vessel" or "non-vessel" based of calculated features.  
 
-In contrast, we use a new type of convolutional neural network, a conditional generative adversarial network (cGAN) developed by Isola et al. [3](#ref-Isola2016) which works on pairs of images. Briefly, given one member of the pair (the placental photo), the cGAN learns to generate the other (the corresponding trace) during training.  The [cGAN website (pix2pix model)](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) contains beautiful visualizations and additional references. 
+In contrast, we use a new type of convolutional neural network, a conditional generative adversarial network (cGAN) developed by Isola et al. `[`[3](#ref-Isola2016)`]` which works on pairs of images. Briefly, given one member of the pair (a photo of the placenta), the cGAN learns to generate the other (the corresponding trace) during training.  The [pix2pix website](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) (of the cGAN code) contains beautiful visualizations and additional references. 
 
-The training options we used can be found in [`2017-08-20-output-train.txt`](https://github.com/canghel/placenta/blob/master/docs/2017-08-20-output-train.txt). 
-
-## Reconstructing full traces
-
-## Results
-
-
-## References 
-
-1. <a id="ref-Chang2017"></a> J.-M. Chang, H. Zeng, R. Han, Y.-M. Chang, R. Shah, C. Salafia, C. Newschaffer, R. Miller, P. Katzman, J. Moye, M. Fallin, C. Walker, L. Croen, "Autism risk classification using placental chorionic surface vascular network features," _Accepted for publication in BMC Medical Informatics and Decision Making_, (2017).  
-
-2. <a id="ref-Almoussa2011"></a> N. Almoussa, B. Dutra, B. Lampe, P. Getreuer, T. Wittman, C. Salafia, L. Vese. ["Automated Vasculature Extraction from Placenta Images,"](https://www.spiedigitallibrary.org/conference-proceedings-of-spie/7962/1/Automated-vasculature-extraction-from-placenta-images/10.1117/12.878343.short) _Proceedings of SPIE Medical Imaging Conference_ 7962 (2011).
-
-3. <a id="ref-Isola2016"></a> P. Isola, J.-Y. Zhu, T. Zhou, A.A. Efros. ["Image-to-Image Translation with Conditional Adversarial Networks,"](https://arxiv.org/pdf/1611.07004v1.pdf) ArXiv e-print 1611.07004 (2016) 
-
-## Software Information
-
-For preprocessing, we used the following:
-
-*	Python 3.6.1 (v3.6.1:69c0db5, Mar 21 2017, 18:41:36) [MSC v.1900 64 bit (AMD64)] on win32
-
-*   MATLAB R_2107a on 2.9Ghz Intel Core i7 CPU
-
-The details for the cGAN are as follows:
-
-*   Code: pyTorch pix2pix [`https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix`](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) (Retrieved July 19, 2017) from [3](#ref-Isola2016)
+For training, inputs to the cGAN were cropped 256 \times 256 pixel images of the placenta and the trace.  For testing, only the 256 \times 256 pixel photo images were supplied. Details of the set-up are as follows:
 
 *   Training Options: [`2017-08-20-output-train.txt`](https://github.com/canghel/placenta/blob/master/docs/2017-08-20-output-train.txt)
 
@@ -73,9 +48,52 @@ The details for the cGAN are as follows:
 time python3.6 test.py --how_many 2764 --dataroot ./datasets/placenta/testPhotosCroppedForNN/ --name 2017-08-20-placenta_pix2pix --model test --which_model_netG unet_256 --which_direction AtoB --dataset_mode single --resize_or_crop scale_width
 ```
 
-*   Hardware: Intel Xeon Processor (10M Cache, 3.50 Ghz) CentOS 6.5 64bit with NVIDIA GeForce GTX 1080 GPU. 
+We tested a different options for number of iterations and `loadSize` and `fineSize`, but we plan to conduct a more rigorous optimization of parameters in the future. 
 
-*   Running time: Training required 5.5 hours, but once trained the testing time was minimal (1m 32 s for all 2764 test images)
+## Reconstructing full traces
+
+To provide results consistent with previous studies `[`[2](#ref-Almoussa2011), [4](#ref-Cheng2013)`]`, we needed to recover the full placental trace from the 256 \times 256 cGAN-reconstucted trace images. This was done simply by "gluing" the smaller images together, using the script [`reassemble.test.py`](https://github.com/canghel/placenta/blob/master/scripts/reassemble.test.py).  We plan to modify this in the future, to obtain smoother reconstructions.
+
+## Results
+
+The results of this preliminary work are very promising. We used the Matthews Correlation Coefficient (MCC)
+
+<!-- MCC = \frac{TP \times TN - FP \times FN}{\sqrt((TP + FP)(TP + FN)(TN + FP)(TN + FN))} -->
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=MCC&space;=&space;\frac{TP&space;\times&space;TN&space;-&space;FP&space;\times&space;FN}{\sqrt((TP&space;&plus;&space;FP)(TP&space;&plus;&space;FN)(TN&space;&plus;&space;FP)(TN&space;&plus;&space;FN))}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?MCC&space;=&space;\frac{TP&space;\times&space;TN&space;-&space;FP&space;\times&space;FN}{\sqrt((TP&space;&plus;&space;FP)(TP&space;&plus;&space;FN)(TN&space;&plus;&space;FP)(TN&space;&plus;&space;FN))}" title="MCC = \frac{TP \times TN - FP \times FN}{\sqrt((TP + FP)(TP + FN)(TN + FP)(TN + FN))}" /></a>
+
+<img align="center" src="img/results_multiscale_and_nn" height="150" alt="hi" class="inline"/> 
+
+
+[`calculate.mcc.py`](https://github.com/canghel/placenta/blob/master/scripts/calculate.mcc.py)
+[`boxplot.of.mcc.py`](https://github.com/canghel/placenta/blob/master/scripts/boxplot.of.mcc.py)
+
+## References 
+
+1. <a id="ref-Chang2017"></a> J.-M. Chang, H. Zeng, R. Han, Y.-M. Chang, R. Shah, C. Salafia, C. Newschaffer, R. Miller, P. Katzman, J. Moye, M. Fallin, C. Walker, L. Croen, "Autism risk classification using placental chorionic surface vascular network features," _Accepted for publication in BMC Medical Informatics and Decision Making_, (2017).  
+
+2. <a id="ref-Almoussa2011"></a> N. Almoussa, B. Dutra, B. Lampe, P. Getreuer, T. Wittman, C. Salafia, L. Vese. ["Automated Vasculature Extraction from Placenta Images,"](https://www.spiedigitallibrary.org/conference-proceedings-of-spie/7962/1/Automated-vasculature-extraction-from-placenta-images/10.1117/12.878343.short) _Proceedings of SPIE Medical Imaging Conference_ 7962 (2011).
+
+3. <a id="ref-Isola2016"></a> P. Isola, J.-Y. Zhu, T. Zhou, A.A. Efros. ["Image-to-Image Translation with Conditional Adversarial Networks,"](https://arxiv.org/pdf/1611.07004v1.pdf) ArXiv e-print 1611.07004 (2016) 
+
+4. <a id="ref-Chang2013"></a> J.-M. Chang, N. Huynh, M. Vazquez, C. Salafia,  ["Vessel enhancement with multiscale and curvilinear filter matching for placenta images,"](http://ieeexplore.ieee.org/document/6623469/) _2013 20th International Conference on Systems, Signals and Image Processing (IWSSIP)_ (2013). 
+
+
+## Software Information2013 20th International Conference on Systems, Signals and Image Processing (IWSSIP) 
+
+For preprocessing, we used the following:
+
+*	Python 3.6.1 (v3.6.1:69c0db5, Mar 21 2017, 18:41:36) [MSC v.1900 64 bit (AMD64)] on win32
+
+*   MATLAB R_2107a on 2.9Ghz Intel Core i7 CPU
+
+The details for the cGAN are as follows:
+
+* 	Code: pyTorch pix2pix [`https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix`](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) (Retrieved July 19, 2017) from [3](#ref-Isola2016)
+
+*   Intel Xeon Processor (10M Cache, 3.50 Ghz) CentOS 6.5 64bit with NVIDIA GeForce GTX 1080 GPU. 
+
+*   Training required 5.5 hours, but once trained the testing time was minimal (1m 32 s for all 2764 test images)
 
 ## Authors
 
