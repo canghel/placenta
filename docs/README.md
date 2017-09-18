@@ -17,7 +17,7 @@ The following is the documentation of the code for the neural network portion of
 
 ## Data Pre-processing
 
-The National Children's Study (NCS) dataset consists of participants assumed to be representative of the general population, with unknown risk for autism.  The placentas were photographed and the vasculature manually traced using consistent protocols described in `[`[1](#ref-Chang2017)`]`. We received photographs of placentas already processed to remove glare and/or increase contrast. Thus, we begin with pairs of images of photos and traces for each placenta as shown below.
+The National Children's Study (NCS) dataset consists of participants assumed to be representative of the general population, with unknown risk for autism.  The placentas were photographed and the vasculature manually traced using consistent protocols described in [[1](#ref-Chang2017)]. We received photographs of placentas already processed to remove glare and/or increase contrast. Thus, we begin with pairs of images of photos and traces for each placenta as shown below.
 
 <img align="center" src="img/preprocessing_raw_photo.png" height="150" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png" height="150" alt=""  class="inline"/>  <img align="center" src="img/preprocessing_raw_trace.png" height="150" alt="hi" class="inline"/> 
 
@@ -34,11 +34,11 @@ We crop the images into non-overlapping squares of 256 by 256 pixels, to be pass
 
 ## Conditional Generative Adversarial Network (cGAN)
 
-Recent advances in both computational resources and in deep learning research motivated us to revisit the neural network approach to blood vessel extraction from a new perspective.  The previous approach `[`[2](#Almoussa2011)`]` classified pixels of the image as "vessel" or "non-vessel" based of calculated features.  
+Recent advances in both computational resources and in deep learning research motivated us to revisit the neural network approach to blood vessel extraction from a new perspective.  The previous approach ([2](#Almoussa2011)) classified pixels of the image as "vessel" or "non-vessel" based of calculated features.  
 
-In contrast, we use a new type of convolutional neural network, a conditional generative adversarial network (cGAN) developed by Isola et al. `[`[3](#ref-Isola2016)`]` which works on pairs of images. Briefly, given one member of the pair (a photo of the placenta), the cGAN learns to generate the other (the corresponding trace) during training.  The [pix2pix website](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) (of the cGAN code) contains beautiful visualizations and additional references. 
+In contrast, we use a new type of convolutional neural network, a conditional generative adversarial network (cGAN) developed by Isola et al. ([3](#ref-Isola2016)) which works on pairs of images. Briefly, given one member of the pair (a photo of the placenta), the cGAN learns to generate the other (the corresponding trace) during training.  The [pix2pix website](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) (of the cGAN code) contains beautiful visualizations and additional references. 
 
-For training, inputs to the cGAN were cropped 256 \times 256 pixel images of the placenta and the trace.  For testing, only the 256 \times 256 pixel photo images were supplied. Details of the set-up are as follows:
+For training, inputs to the cGAN were cropped 256 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\times" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\times" title="\times" /></a> 256 pixel images of the placenta and the trace.  For testing, only the 256 \times 256 pixel photo images were supplied. Details of the set-up are as follows:
 
 *   Training Options: [`2017-08-20-output-train.txt`](https://github.com/canghel/placenta/blob/master/docs/2017-08-20-output-train.txt)
 
@@ -52,7 +52,7 @@ We tested a different options for number of iterations and `loadSize` and `fineS
 
 ## Reconstructing full traces
 
-To provide results consistent with previous studies `[`[2](#ref-Almoussa2011), [4](#ref-Cheng2013)`]`, we needed to recover the full placental trace from the 256 \times 256 cGAN-reconstucted trace images. This was done simply by "gluing" the smaller images together, using the script [`reassemble.test.py`](https://github.com/canghel/placenta/blob/master/scripts/reassemble.test.py).  We plan to modify this in the future, to obtain smoother reconstructions.
+To provide results consistent with previous studies ([2](#ref-Almoussa2011), [4](#ref-Cheng2013)), we needed to recover the full placental trace from the 256 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\times" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\times" title="\times" /></a> 256 cGAN-reconstucted trace images. This was done simply by "gluing" the smaller images together, using the script [`reassemble.test.py`](https://github.com/canghel/placenta/blob/master/scripts/reassemble.test.py).  We plan to modify this in the future, to obtain smoother reconstructions.
 
 ## Results
 
@@ -62,7 +62,9 @@ The results of this preliminary work are very promising. We used the Matthews Co
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=MCC&space;=&space;\frac{TP&space;\times&space;TN&space;-&space;FP&space;\times&space;FN}{\sqrt((TP&space;&plus;&space;FP)(TP&space;&plus;&space;FN)(TN&space;&plus;&space;FP)(TN&space;&plus;&space;FN))}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?MCC&space;=&space;\frac{TP&space;\times&space;TN&space;-&space;FP&space;\times&space;FN}{\sqrt((TP&space;&plus;&space;FP)(TP&space;&plus;&space;FN)(TN&space;&plus;&space;FP)(TN&space;&plus;&space;FN))}" title="MCC = \frac{TP \times TN - FP \times FN}{\sqrt((TP + FP)(TP + FN)(TN + FP)(TN + FN))}" /></a>
 
-<img align="center" src="img/results_multiscale_and_nn" height="150" alt="hi" class="inline"/> 
+in comparing the cGAN-reconstructed trace against the ground-truth manual trace.  In previous work ([2](#ref-Almoussa2011), [4](#ref-Cheng2013)), the 
+
+<img align="center" src="img/results_multiscale_and_nn.png" height="150" alt="hi" class="inline"/> 
 
 
 [`calculate.mcc.py`](https://github.com/canghel/placenta/blob/master/scripts/calculate.mcc.py)
