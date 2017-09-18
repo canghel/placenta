@@ -19,18 +19,18 @@ The following is the documentation of the code for the neural network portion of
 
 The National Children's Study (NCS) dataset consists of participants assumed to be representative of the general population, with unknown risk for autism.  The placentas were photographed and the vasculature manually traced using consistent protocols described in [[1](#ref-Chang2017)]. We received photographs of placentas already processed to remove glare and/or increase contrast. Thus, we begin with pairs of images of photos and traces for each placenta as shown below.
 
-<img align="center" src="img/preprocessing_raw_photo.png" height="250" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png" height="250" alt=""  class="inline"/>  <img align="center" src="img/preprocessing_raw_trace.png" height="250" alt="hi" class="inline"/> 
+<img align="center" src="img/preprocessing_raw_photo.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png" height="200" alt=""  class="inline"/>  <img align="center" src="img/preprocessing_raw_trace.png" height="200"  class="inline"/> 
 
 The first step is to adjust the background, crop, and convert the trace to black and white, using the script [`data.setup.initial.py`](https://github.com/canghel/placenta/blob/master/scripts/data.setup.initial.py ).
 
-<img align="center" src="img/preprocessing_white_and_crop_photo.png" height="250" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="250" alt="" class="inline"/>  <img align="center" src="img/preprocessing_white_and_crop_trace.png" height="250" alt="hi" class="inline"/> 
+<img align="center" src="img/preprocessing_white_and_crop_photo.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="200" alt="" class="inline"/>  <img align="center" src="img/preprocessing_white_and_crop_trace.png" height="200"  class="inline"/> 
 
 We crop the images into non-overlapping squares of 256 by 256 pixels, to be passed into the neural network. The salient feature of the images is the vasculature, which does not have an up-down or left-right orientation. Thus we augment the training dataset by rotating the images by 0&deg;, 90&deg;, 180&deg; and 270&deg;. An internal option to the neural network also flips them horizontally.  The function to crop and rotate the images is [`cropandrotate.m`](https://github.com/canghel/placenta/blob/master/scripts/cropandrotate.m).  
 
-<img align="center" src="img/preprocessing_crop_photo_Angle_0.png" height="75" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_photo_Angle_90.png" height="75" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_photo_Angle_180.png" height="75" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_photo_Angle_270.png" height="75" alt="hi" class="inline"/> 
+<img align="center" src="img/preprocessing_crop_photo_Angle_0.png" height="75"  class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_photo_Angle_90.png" height="75"  class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_photo_Angle_180.png" height="75"  class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_photo_Angle_270.png" height="75"  class="inline"/> 
 
 
-<img align="center" src="img/preprocessing_crop_trace_Angle_0.png" height="75" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_trace_Angle_90.png" height="75" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_trace_Angle_180.png" height="75" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_trace_Angle_270.png" height="75" alt="hi" class="inline"/> 
+<img align="center" src="img/preprocessing_crop_trace_Angle_0.png" height="75"  class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_trace_Angle_90.png" height="75"  class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_trace_Angle_180.png" height="75"  class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_trace_Angle_270.png" height="75"  class="inline"/> 
 
 ## Conditional Generative Adversarial Network (cGAN)
 
@@ -56,6 +56,18 @@ We tested a different options for number of iterations and `loadSize` and `fineS
 
 To provide results consistent with previous studies [[2](#ref-Almoussa2011), [4](#ref-Cheng2013)], we needed to recover the full placental trace from the 256 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\times" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\times" title="\times" /></a> 256 cGAN-reconstucted trace images. This was done simply by "gluing" the smaller images together, using the script [`reassemble.test.py`](https://github.com/canghel/placenta/blob/master/scripts/reassemble.test.py).  We plan to modify this in the future, to obtain smoother reconstructions.
 
+Below are reconstructions of three placentas from the test set.  From left to right, the images are for the reconstructions with minimum, approximate mean, and maximum Matthews Correlation Coefficient values (see below).  From top to bottom are the photograph, the reconstruction, and the manual ground truth trace. 
+
+
+<img align="center" src="img/Full-Reconstructions/worst_photo_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="200" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_photo_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="200" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_photo_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="200" class="inline"/> 
+
+
+<img align="center" src="img/Full-Reconstructions/worst_recon_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png_recon_avg.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="200" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_recon_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png_recon_avg.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="200" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_recon_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png_recon_avg.png" height="200"  class="inline"/> 
+
+
+<img align="center" src="img/Full-Reconstructions/worst_trace_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="200" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_trace_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="200" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_trace_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="200"  class="inline"/> 
+
+
 ## Results
 
 The results of this preliminary work are very promising. We used the Matthews Correlation Coefficient (MCC)
@@ -64,28 +76,16 @@ The results of this preliminary work are very promising. We used the Matthews Co
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=MCC&space;=&space;\frac{TP&space;\times&space;TN&space;-&space;FP&space;\times&space;FN}{\sqrt{(TP&space;&plus;&space;FP)(TP&space;&plus;&space;FN)(TN&space;&plus;&space;FP)(TN&space;&plus;&space;FN)}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?MCC&space;=&space;\frac{TP&space;\times&space;TN&space;-&space;FP&space;\times&space;FN}{\sqrt{(TP&space;&plus;&space;FP)(TP&space;&plus;&space;FN)(TN&space;&plus;&space;FP)(TN&space;&plus;&space;FN)}}" title="MCC = \frac{TP \times TN - FP \times FN}{\sqrt{(TP + FP)(TP + FN)(TN + FP)(TN + FN)}}" /></a>
 
-in comparing the cGAN-reconstructed trace against the ground-truth manual trace.  In previous work [[2](#ref-Almoussa2011), [4](#ref-Cheng2013)], the MCC for a similar dataset (the University of North Carolina (Pregnancy, Infection, and Nutrition Study) was 0.4 or below.  
+in comparing the cGAN-reconstructed trace against the ground-truth manual trace.  In previous work [[2](#ref-Almoussa2011), [4](#ref-Cheng2013)], the MCC for a similar dataset (the University of North Carolina (Pregnancy, Infection, and Nutrition Study) of 16 placentas was 0.4 or below.  In [[4](#ref-Cheng2013)], a figure compares box plots of the MCC values using the NN approach of [[2](#ref-Almoussa2011)] and the best MCC value for the multiscale-filter method and the enhanced method.
 
-<img align="center" src="img/mccPlots/results_multiscale_and_nn.png" height="250" alt="hi" class="inline"/>*Box plots of the MCC values using the NN approach of [[2](#ref-Almoussa2011)] on 16 placentas tested. The best MCC value for the multiscale-filter method and the enhanced method are plotted for comparison. [[4](#ref-Cheng2013)]*
-
-For the current work, the MCC value for the 42 placentas in the testing set was 0.74, with range from 0.66 to 0.82. The calculation is in the scripts [`calculate.mcc.py`](https://github.com/canghel/placenta/blob/master/scripts/calculate.mcc.py) and [`boxplot.of.mcc.py`](https://github.com/canghel/placenta/blob/master/scripts/boxplot.of.mcc.py).
-
-<img align="center" src="img/mccPlots/mccValuesForTestHist.png " height="250" alt="hi" class="inline"/> 
-*A histogram of the MCC values for the 42 placentas in the testing set.*
-
-<img align="center" src="img/mccPlots/mccValuesForTestHist.png " height="250" alt="hi" class="inline"/> 
-*A box plot of the MCC for the reconstructions for the training, validation and testing dataset.*
+<img align="center" src="img/mccPlots/results_multiscale_and_nn.png" height="250"  class="inline"/>
 
 
-Below, we have given the reconstructions of three placentas from the test set.  From left to right, the images are for the reconstructions with minimum, approximate mean, and maximum MCC values.  From top to bottom are the photograph, the reconstruction, and the manual (ground truth) trace. 
+For the current work, the MCC value for the 42 placentas in the testing set was 0.74, with range from 0.66 to 0.82. The calculation is in the scripts [`calculate.mcc.py`](https://github.com/canghel/placenta/blob/master/scripts/calculate.mcc.py) and [`boxplot.of.mcc.py`](https://github.com/canghel/placenta/blob/master/scripts/boxplot.of.mcc.py).  Below are a histogram of the MCC values for the 42 placentas in the testing set and a box plot of the MCC for the training, validation and testing datasets.
 
-<img align="center" src="img/Full-Reconstructions/worst_photo_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="250" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="250" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_photo_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="250" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="250" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_photo_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="250" alt="hi" class="inline"/> 
+<img align="center" src="img/mccPlots/mccValuesForTestHist.png" height="250"  class="inline"/> 
 
-
-<img align="center" src="img/Full-Reconstructions/worst_recon_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="250" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="250" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_recon_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="250" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="250" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_recon_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="250" alt="hi" class="inline"/> 
-
-
-<img align="center" src="img/Full-Reconstructions/worst_trace_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="250" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="250" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_trace_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="250" alt="hi" class="inline"/> <img align="center" src="img/whitespace.png"  height="250" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_trace_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="250" alt="hi" class="inline"/> 
+<img align="center" src="img/mccPlots/mccValuesBoxPlot.png" height="250"  class="inline"/> 
 
 
 ## References 
