@@ -121,7 +121,7 @@ The imaging portion of the project was led by Jen-Mei Chang, Karamatou (Kara) Ya
 
 Dr. Carolyn Salafia and Ruchit Shah from [Placental Analytics, LLC](http://www.placentalanalytics.com/) provided the data, extensive biological knowledge and research support.
 
-For data and medical content, the authors are Craig Newschaffer, Drexel University; Richard Miller, University of Rochester, NIH National Children’s Study Placenta Consortium; Philip J. Katzman, University of Rochester, NIH National Children’s Study Placenta Consortium; Jack Moye, NICHD; Margaret Fallin, Johns Hopkins University; Cheryl K. Walker, UC Davis; Lisa Croen, Kaiser Permenante Division of Research.
+For data and medical expertise, the authors are Richard Miller, University of Rochester, NIH National Children’s Study Placenta Consortium; Philip J. Katzman, University of Rochester, NIH National Children’s Study Placenta Consortium; and Jack Moye, NICHD.
 
 
 ## Acknowledgements
@@ -130,6 +130,8 @@ We gratefully acknowledge the support of the following organizations and persons
 
 *	The project was part of the [MBI Women Advancing Mathematical Biology: Understanding Complex Biological Systems with Mathematics 2017 Workshop](https://mbi.osu.edu/event/?id=1067 ).  The Mathematical Biosciences Institute sponsored the workshop, with support from Association for Women in Mathematics, The Society for Mathematical Biology, and Microsoft Research.
 
-*   We received biology expertise and support from Dr. Carolyn Salafia, Ruchit Shah, Dr. George Merz, and Dr. Richard K. Miller.
+<!-- *   We received biology expertise and support from Dr. Carolyn Salafia, Ruchit Shah, Dr. George Merz, and Dr. Richard K. Miller. -->
 
-*	We thank the medical professionals involved in the National Children's Study (NCS), and most importantly the participants who donated their placentas.
+*	The authors wish to thank the following people who contributed to the collection of the placentas in the National Children's Study Placenta Consortium: CJ Stodgell, L Salamone, LI Ruffolo, A Penmetsa, P Weidenborner (University of Rochester), J Culhane, S Wadlinger, M Pacholski,  MA Kent, L Green (University of Pennsylvania),  R Wapner, C Torres, J Perou (Columbia University), P Landrigan,  J Chen,  L Lambertini,  L Littman,  P Sheffield, A Golden, J Gilbert, C Lendor, S Allen, K Mantilla, Y Ma (Ichan School of Medicine),  S Leuthner, S Szabo (Medical College of Wisconsin), JL Dalton, D  Misra (Placenta Analytics), N Thiex, K Gutzman, A Martin, B Specker (South Dakota University),  J Swanson, C Holliday,  J Butler (University of California at Irvine),  A LI, RMAP S Dassanayake, J Nanes, Y Xia (University of Illinois at Chicago),  JC Murray,  TD Busch, J Rigdon (University of Iowa), Kjersti Aagaard, A Harris (Baylor College of Medicine), TH Darrah, E Campbell (Boston University), N Dole, J Thorp,  B Eucker, C Bell (University of North Carolina at Chapel Hill), EB Clark, MW Varner, E Taggart, J Billy, S Stradling, J Leavitt, W Bell, S Waterfall (University of Utah), B O'Brien, M Layton, D Todd, K Wilson, MS Durkin,  M-N Sandoval (Westat, Inc).
+
+*	Most importantly, we thank the participants who donated their placentas.
