@@ -52,23 +52,23 @@ time python3.6 test.py --how_many 2764 --dataroot ./datasets/placenta/testPhotos
 
 We tested a different options for number of iterations and `loadSize` and `fineSize`, but we plan to conduct a more rigorous optimization of parameters in the future. 
 
-## Reconstructing full traces
+## Reconstructing Full Traces
 
 To provide results consistent with previous studies [[2](#ref-Almoussa2011), [4](#ref-Cheng2013)], we needed to recover the full placental trace from the 256 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\times" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\times" title="\times" /></a> 256 cGAN-reconstucted trace images. This was done simply by "gluing" the smaller images together, using the script [`reassemble.test.py`](https://github.com/canghel/placenta/blob/master/scripts/reassemble.test.py).  We plan to modify this in the future, to obtain smoother reconstructions.
 
 Below are reconstructions of three placentas from the test set.  From left to right, the images are for the reconstructions with minimum, approximate mean, and maximum Matthews Correlation Coefficient values (see below).  From top to bottom are the photograph, the reconstruction, and the manual ground truth trace. 
 
 
-<img align="center" src="img/Full-Reconstructions/worst_photo_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_photo_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_photo_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="200" class="inline"/> 
+<img align="center" src="img/Full-Reconstructions/worst_photo_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_photo_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_photo_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="200" class="inline"/> 
 
 
-<img align="center" src="img/Full-Reconstructions/worst_recon_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png_recon_avg.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_recon_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png_recon_avg.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_recon_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png_recon_avg.png" height="200"  class="inline"/> 
+<img align="center" src="img/Full-Reconstructions/worst_recon_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png_recon_avg.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_recon_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png_recon_avg.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_recon_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png_recon_avg.png" height="200"  class="inline"/> 
 
 
-<img align="center" src="img/Full-Reconstructions/worst_trace_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_trace_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="150" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_trace_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="200"  class="inline"/> 
+<img align="center" src="img/Full-Reconstructions/worst_trace_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_trace_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_trace_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="200"  class="inline"/> 
 
 
-## Results
+## Quantitative Results
 
 The results of this preliminary work are very promising. We used the Matthews Correlation Coefficient (MCC)
 
@@ -76,7 +76,7 @@ The results of this preliminary work are very promising. We used the Matthews Co
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=MCC&space;=&space;\frac{TP&space;\times&space;TN&space;-&space;FP&space;\times&space;FN}{\sqrt{(TP&space;&plus;&space;FP)(TP&space;&plus;&space;FN)(TN&space;&plus;&space;FP)(TN&space;&plus;&space;FN)}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?MCC&space;=&space;\frac{TP&space;\times&space;TN&space;-&space;FP&space;\times&space;FN}{\sqrt{(TP&space;&plus;&space;FP)(TP&space;&plus;&space;FN)(TN&space;&plus;&space;FP)(TN&space;&plus;&space;FN)}}" title="MCC = \frac{TP \times TN - FP \times FN}{\sqrt{(TP + FP)(TP + FN)(TN + FP)(TN + FN)}}" /></a>
 
-in comparing the cGAN-reconstructed trace against the ground-truth manual trace.  In previous work [[2](#ref-Almoussa2011), [4](#ref-Cheng2013)], the MCC for a similar dataset (the University of North Carolina (Pregnancy, Infection, and Nutrition Study) of 16 placentas was 0.4 or below.  In [[4](#ref-Cheng2013)], a figure compares box plots of the MCC values using the NN approach of [[2](#ref-Almoussa2011)] and the best MCC value for the multiscale-filter method and the enhanced method.
+in comparing the cGAN-reconstructed trace against the ground-truth manual trace.  In previous work [[2](#ref-Almoussa2011), [4](#ref-Cheng2013)], the MCC for a similar dataset (the University of North Carolina Pregnancy, Infection, and Nutrition Study) of 16 placentas was 0.4 or below.  In [[4](#ref-Cheng2013)], a figure compares box plots of the MCC values using the NN approach of [[2](#ref-Almoussa2011)] and the best MCC value for the multiscale-filter and the enhanced curvilinear filter methods.
 
 <img align="center" src="img/mccPlots/results_multiscale_and_nn.png" height="250"  class="inline"/>
 
