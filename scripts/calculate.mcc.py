@@ -26,14 +26,24 @@ import plotly.plotly as py
 # not quite sure what pandas are yet
 import pandas as pd
 
+# datetime
+import datetime
+now = datetime.datetime.now()
+
 ### PATHS #####################################################################
 
-# pathReal = "/home/Documents/placenta/data/testTraces";
-# pathFake = "/home/Documents/placenta/data/Reconstructed/CroppedAverage/"
-pathReal = "/home/Documents/placenta/data/ReconstructedVal/CroppedTrace/";
-pathFake = "/home/Documents/placenta/data/ReconstructedVal/CroppedAverage/"
+trainValOrTest = 'val';
+if (trainValOrTest=="test"):
+	pathReal = "/home/Documents/placenta/data/testTraces";
+	pathFake = "/home/Documents/placenta/data/2017-10-19-Reconstructed/CroppedAverage/"
+else:
+	pathReal = "/home/Documents/placenta/data/Traces/Pre-processed";
+	pathFake = "/home/Documents/placenta/data/2017-10-19-Reconstructed"+trainValOrTest.capitalize()+"/CroppedAverage/"
+
 fakeFiles = fnmatch.filter(os.listdir(pathFake), '*_recon_avg.png');
 realFiles = [re.sub("_recon_avg.png", "", x) for x in fakeFiles]
+
+print('--- Dataset: '+trainValOrTest);
 
 numFiles = len(fakeFiles)
 mccResults = []
@@ -76,9 +86,18 @@ for jj in range(0, numFiles):
 	mcc = (TP*TN-FP*FN)/np.sqrt(((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN))+0.0);
 	mccResultsCheck.append(mcc); 
 
+print('--- Results summary -----------------------------------')
+print('Min:'+str(np.min(mccResults)))
+print('Mean:'+str(np.mean(mccResults)))
+print('Median:'+str(np.median(mccResults)))
+print('Max:'+str(np.max(mccResults)))
+print('Mean results check:'+str(np.mean(mccResultsCheck)))
+print('------------------------------------------------------')
+
+
 ### SAVE RESULTS TO FILE ######################################################
 
-np.savetxt('/home/Documents/placenta/data/testMCCValues.txt', mccResults)
+np.savetxt('/home/Documents/placenta/data/'+str(now.strftime("%Y-%m-%d"))+'-'+trainValOrTest+'MCCValues.txt', mccResults)
 
 ### PLOT A HISTOGRAM OF RESULTS ###############################################
 
@@ -100,17 +119,17 @@ plt.ylabel("Frequency", fontsize=22)
 plt.hist(mccResults, color="#3F5D7D", edgecolor="k")  
 
 fig = plt.gcf()
-fig.savefig('/home/Documents/placenta/data/testMCCValuesHist.png', bbox_inches="tight")
-plt.close(fig)
+fig.savefig('/home/Documents/placenta/data/'+str(now.strftime("%Y-%m-%d"))+'-'+trainValOrTest+'-MCCValuesHist.png', bbox_inches="tight")
+# plt.close(fig)
 
-# # plot a histogram of mccResults
+# plot a histogram of mccResults
 # plt.hist(mccResults)
-# plt.title("MCC Values for 42 Test Placenta Images")
+# plt.title("MCC Values for Test Placenta Images")
 # plt.xlabel("Value")
 # plt.ylabel("Frequency")
 # fig = plt.gcf()
-# fig.savefig('/home/Documents/placenta/data/testMCCValuesHist.png')
-
+# fig.savefig('/home/Documents/placenta/data/'+now.strftime("%Y-%m-%d")+'-'+trainValOrTest+'MCCValuesHist-2.png')
+# plt.close(fig)
 
 # ### PLOT A BOXPLOT OF RESULTS #################################################
 

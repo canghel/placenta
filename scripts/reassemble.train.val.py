@@ -15,9 +15,10 @@ import sys, traceback
 
 ### PATHS #####################################################################
 
+trainOrVal = "val"
 pathTraces = "/home/Documents/placenta/data/Traces/Pre-processed/"
-pathResults = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/val_set/images"
-pathOutput = "/home/Documents/placenta/data/ReconstructedVal"
+pathResults = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/2017-10-19-"+trainOrVal+"/images"
+pathOutput = "/home/Documents/placenta/data/2017-10-19-Reconstructed"+trainOrVal.capitalize()
 
 ### FIND FILENAME STEM FOR EACH PLACENTA #####################################
 
@@ -41,8 +42,8 @@ for jj in range(0, numFullResults):
 	traceImage = cv2.imread(os.path.join(pathTraces, fileStem[jj]))
 
 	# number of rows and number of columns
-	nofr = np.int(np.floor(traceImage.shape[0]/256));
-	nofc = np.int(np.floor(traceImage.shape[1]/256));
+	nofr = np.int(np.ceil(traceImage.shape[0]/256));
+	nofc = np.int(np.ceil(traceImage.shape[1]/256));
 
 	cv2.imwrite(os.path.join(pathOutput, 'CroppedTrace',  fileStem[jj]), traceImage[0:nofr*256, 0:nofc*256,:]);
 

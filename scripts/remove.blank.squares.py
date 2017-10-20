@@ -20,11 +20,10 @@ import random
 
 ### PATHS #####################################################################
 
-
 pathFiles = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/datasets/placenta/"+trainOrVal
-pathRemovedFiles = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/datasets/placenta/old/blankSquares/"+trainOrVal
+pathRemovedFiles = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/datasets/placenta/old/blankankSquares/"+trainOrVal
 
-### GET ALL FILES ###########################################################
+### GET ALL FILES #############################################################
 
 allFiles = fnmatch.filter(os.listdir(pathFiles), '*.png');
 fileStem = np.unique([re.sub('_Part_[0-9]*_Angle_[0-9]*.png', '', x) for x in allFiles]);
@@ -34,7 +33,7 @@ numFiles = len(allFiles);
 
 print("The number of placentas is", numPlacentas);
 
-### FIND FILENAME STEM FOR EACH PLACENTA #####################################
+### MOVE (MOST) ALMOST BLANK SQUARES OUT OF DIRECTORY #########################
 
 random.seed(100);
 

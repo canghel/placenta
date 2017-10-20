@@ -11,11 +11,15 @@ import plotly.plotly as py
 # not quite sure what pandas are yet
 import pandas as pd
 
+# datetime
+import datetime
+now = datetime.datetime.now()
+
 ### READ IN THE THREE MCC FILES ###############################################
 
-mccTrain = np.loadtxt('/home/Documents/placenta/data/trainMCCValues.txt');
-mccVal = np.loadtxt('/home/Documents/placenta/data/valMCCValues.txt');
-mccTest = np.loadtxt('/home/Documents/placenta/data/testMCCValues.txt');
+mccTrain = np.loadtxt('/home/Documents/placenta/data/2017-10-20-trainMCCValues.txt');
+mccVal = np.loadtxt('/home/Documents/placenta/data/2017-10-20-valMCCValues.txt');
+mccTest = np.loadtxt('/home/Documents/placenta/data/2017-10-20-testMCCValues.txt');
 
 nTrain = len(mccTrain);
 nVal = len(mccVal);
@@ -53,4 +57,4 @@ for x, val, clevel in zip(xs, vals, clevels):
     plt.scatter(x, val, c=cm.Paired(clevel), alpha=0.4)
 
 fig = plt.gcf()
-fig.savefig('/home/Documents/placenta/data/MCCValuesBoxPlotPastel.png', bbox_inches="tight")
+fig.savefig('/home/Documents/placenta/data/'+str(now.strftime("%Y-%m-%d"))+'-'+'MCCValuesBoxPlotPastel.png', bbox_inches="tight")
