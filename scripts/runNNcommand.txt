@@ -1,0 +1,1 @@
+time python3.6 test.py --how_many 7124 --dataroot /home/Documents/placenta/data/testPhotos/CroppedForNNOverlapping/ --name placenta_pix2pix --model test --which_model_netG unet_256 --which_direction AtoB --dataset_mode single --resize_or_crop crop
