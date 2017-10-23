@@ -1,6 +1,6 @@
 # crop and rotate
 
-def 	cropRotateOverlay(filename, inputdir, outputdir):
+def cropRotateOverlay(filename, inputdir, outputdir):
 	### PREAMBLE ##################################################################
 
 	import cv2
@@ -63,15 +63,17 @@ def 	cropRotateOverlay(filename, inputdir, outputdir):
 				# get the number of the part
 				part = (nofc-1)*rr + cc + 1;
 				# get the start and end indices of the image
-				rStart = 256*rr + translationValue[ii];
-				rEnd = 256*(rr+1) + translationValue[ii];
-				cStart = 256*cc + translationValue[ii];
-				cEnd = 256*(cc+1) + translationValue[ii];
+				rStart = 256*rr + translationValue[ii]-1;
+				rEnd = 256*(rr+1) + translationValue[ii]-1;
+				cStart = 256*cc + translationValue[ii]-1;
+				cEnd = 256*(cc+1) + translationValue[ii]-1;
 
 				output = newimg[rStart:rEnd,cStart:cEnd,:];
 				
 				for jj in range(0, 4):
 					outputFile = filename+'_Part_'+str(part)+'_'+str(angles[jj])+'_Trans_'+str(translationValue[ii])+'.png'
+					print(jj)
+					print(angles[jj])
 					output = np.rot90(output, jj);
 					cv2.imwrite(os.path.join(outputdir, outputFile), output);
 
