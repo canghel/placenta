@@ -14,15 +14,15 @@ import sys, traceback
 ### PATHS #####################################################################
 
 pathTraces = "/home/Documents/placenta/data/Traces/Pre-processed/"
-pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/2017-10-19-val/images"
-pathOutput = "/home/Documents/placenta/data/2017-10-19-ReconstructedVal"
+pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/2017-10-23-test_latest/images"
+pathOutput = "/home/Documents/placenta/data/2017-10-23-Reconstructed"
 
 ### FIND FILENAME STEM FOR EACH PLACENTA #####################################
 
-testFiles = fnmatch.filter(os.listdir(pathTest), '*fake_B.png');
+testFiles = fnmatch.filter(os.listdir(pathTest), '*_Trans_0_fake_B.png');
 
 # get the unique files that were processed
-fileStem = np.unique([re.sub('_Part_[0-9]*_Angle_[0-9]*_fake_B.png', '', x) for x in testFiles])
+fileStem = np.unique([re.sub('_Part_[0-9]*_Angle_[0-9]*_Trans_0_fake_B.png', '', x) for x in testFiles])
 # number of full placentas in the test dataset
 numFullTest = len(fileStem);
 
@@ -42,7 +42,7 @@ for jj in range(0, numFullTest):
 	nofr = np.int(np.ceil(traceImage.shape[0]/256));
 	nofc = np.int(np.ceil(traceImage.shape[1]/256));
 
-	cv2.imwrite(os.path.join(pathOutput, 'CroppedTrace',  fileStem[jj]), traceImage[0:nofr*256, 0:nofc*256,:]);
+	cv2.imwrite(os.path.join(pathOutput, 'CroppedTraceTrans0',  fileStem[jj]), traceImage[0:nofr*256, 0:nofc*256,:]);
 
 	# loop over all the angles (aa is index of the angle)
 	for aa in range(0, 4):
@@ -57,7 +57,7 @@ for jj in range(0, numFullTest):
 				# get the number of the part
 				part = nofc*rr + cc + 1;
 				# this is the file and load the 256x256 part of the image
-				fileToLoad = fileStem[jj]+'_Part_'+str(part)+'_'+angle+'_fake_B.png'
+				fileToLoad = fileStem[jj]+'_Part_'+str(part)+'_'+angle+'_Trans_0_fake_B.png'
 				subImage = cv2.imread(os.path.join(pathTest, fileToLoad));
 
 				# need to save that image as part of the bigger image
@@ -71,13 +71,13 @@ for jj in range(0, numFullTest):
 				elif (angle=='Angle_90'):
 				    output[rStart:rEnd,cStart:cEnd,:] = np.rot90(subImage, 3);
 				elif (angle=='Angle_180'):
-				    output[rStart:rEnd,cStart:cEnd,:] = np.rot90(subImage, 2);
-				elif (angle=='Angle_270'):
 				    output[rStart:rEnd,cStart:cEnd,:] = np.rot90(subImage, 1);
+				elif (angle=='Angle_270'):
+				    output[rStart:rEnd,cStart:cEnd,:] = np.rot90(subImage, 2);
 
 		# save output to file
 		outputFile = fileStem[jj]+'_recon_'+angle+'.png'
-		cv2.imwrite(os.path.join(pathOutput, 'ByAngle',  outputFile), output);
+		cv2.imwrite(os.path.join(pathOutput, 'ByAngleTrans0',  outputFile), output);
 
 		# keep a record of the average trace
 		# easier to divide each by 4 than average at the end
@@ -90,5 +90,5 @@ for jj in range(0, numFullTest):
 	# save the average trace
 	averageTrace = np.around(averageTrace).astype(int)
 	averageFile = fileStem[jj]+'_recon_avg.png'
-	cv2.imwrite(os.path.join(pathOutput, 'Average', averageFile), averageTrace);
-	cv2.imwrite(os.path.join(pathOutput, 'CroppedAverage', averageFile), averageTrace[0:traceImage.shape[0], 0:traceImage.shape[1],:]);
+	cv2.imwrite(os.path.join(pathOutput, 'AverageTrans0', averageFile), averageTrace);
+	cv2.imwrite(os.path.join(pathOutput, 'CroppedAverageTrans0', averageFile), averageTrace[0:traceImage.shape[0], 0:traceImage.shape[1],:]);
