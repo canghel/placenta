@@ -32,7 +32,7 @@ now = datetime.datetime.now()
 
 ### PATHS #####################################################################
 
-trainValOrTest = 'val';
+trainValOrTest = 'test';
 if (trainValOrTest=="test"):
 	pathReal = "/home/Documents/placenta/data/testTraces";
 	pathFake = "/home/Documents/placenta/data/2017-10-19-Reconstructed/CroppedAverage/"
@@ -131,32 +131,33 @@ fig.savefig('/home/Documents/placenta/data/'+str(now.strftime("%Y-%m-%d"))+'-'+t
 # fig.savefig('/home/Documents/placenta/data/'+now.strftime("%Y-%m-%d")+'-'+trainValOrTest+'MCCValuesHist-2.png')
 # plt.close(fig)
 
-# ### PLOT A BOXPLOT OF RESULTS #################################################
+### PLOT A BOXPLOT OF RESULTS #################################################
 
-# # ooh, I should really do train, test, validation...
+# ooh, I should really do train, test, validation...
 
-# # initialize dataframe
-# df = pd.DataFrame({'MCC': mccResults, 'group': 'Test dataset'})
-# group = 'group'
-# column = 'MCC'
-# grouped = df.groupby(group)
+# initialize dataframe
+df = pd.DataFrame({'MCC': mccResults, 'group': 'Test dataset'})
+group = 'group'
+column = 'MCC'
+grouped = df.groupby(group)
 
-# names, vals, xs = [], [] ,[]
+names, vals, xs = [], [] ,[]
 
-# for i, (name, subdf) in enumerate(grouped):
-#     names.append(name)
-#     vals.append(subdf[column].tolist())
-#     xs.append(np.random.normal(i+1, 0.04, subdf.shape[0]))
+for i, (name, subdf) in enumerate(grouped):
+    names.append(name)
+    vals.append(subdf[column].tolist())
+    xs.append(np.random.normal(i+1, 0.04, subdf.shape[0]))
 
-# plt.figure(figsize=(12, 12))  
-# plt.boxplot(vals, labels=names)
-# plt.xticks(fontsize=18) 
-# plt.yticks(fontsize=18)  
-# ngroup = len(vals)
-# clevels = np.linspace(0., 1., ngroup)
+plt.figure(figsize=(12, 12))  
+plt.boxplot(vals, labels=names)
+plt.xticks(fontsize=18) 
+plt.yticks(fontsize=18) 
+plt.ylim([0.66,0.835]) 
+ngroup = len(vals)
+clevels = np.linspace(0., 1., ngroup)
 
-# for x, val, clevel in zip(xs, vals, clevels):
-#     plt.scatter(x, val, c=cm.prism(clevel), alpha=0.4)
+for x, val, clevel in zip(xs, vals, clevels):
+    plt.scatter(x, val, c=cm.prism(clevel), alpha=0.4)
 
-# fig = plt.gcf()
-# fig.savefig('/home/Documents/placenta/data/testMCCValuesBoxPlot.png', bbox_inches="tight")
+fig = plt.gcf()
+fig.savefig('/home/Documents/placenta/data//'+now.strftime("%Y-%m-%d")+'-testMCCValuesBoxPlot.png', bbox_inches="tight")
