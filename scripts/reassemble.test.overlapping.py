@@ -14,8 +14,9 @@ import sys, traceback
 ### PATHS #####################################################################
 
 pathTraces = "/home/Documents/placenta/data/Traces/Pre-processed/"
-pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/2017-10-23-test_latest/images"
-pathOutput = "/home/Documents/placenta/data/2017-10-23-Reconstructed"
+#pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/2017-10-23-test_latest/images"
+pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/2017-08-20-placenta_pix2pix/test_latest/images/"
+pathOutput = "/home/Documents/placenta/data/2017-10-24-Reconstructed"
 
 ### FIND FILENAME STEM FOR EACH PLACENTA #####################################
 
