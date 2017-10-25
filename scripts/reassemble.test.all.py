@@ -31,8 +31,8 @@ import numpy as np
 
 pathTraces = "/home/Documents/placenta/data/Traces/Pre-processed/"
 #pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/2017-10-23-test_latest/images"
-pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/2017-08-20-placenta_pix2pix/test_latest/images/"
-pathOutput = "/home/Documents/placenta/data/2017-10-24-Reconstructed"
+pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/2017-10-19-placenta_pix2pix/test_latest/images/"
+pathOutput = "/home/Documents/placenta/data/2017-10-23-Reconstructed/"
 
 ### FIND FILENAME STEM FOR EACH PLACENTA #####################################
 
@@ -69,10 +69,10 @@ for ii in range(0, numFullTest):
 	# !!!
 
 	# the innermost rectangle is covered by 4 images that are averages
-	rStart = 191;
-	rEnd = 256*nofr - 192 - 1;
-	cStart = 191;
-	cEnd = 256*nofc - 192 - 1;
+	rStart = 192;
+	rEnd = 256*nofr - 192;
+	cStart = 192;
+	cEnd = 256*nofc - 192;
 
 	rr = outputTrans64.shape[0]
 	cc = outputTrans64.shape[1]
@@ -191,6 +191,9 @@ for ii in range(0, numFullTest):
 	fakeThresh, fakeImageBW = cv2.threshold(output, 200, 255, cv2.THRESH_BINARY)
 	realThresh, realImageBW = cv2.threshold(traceImage, 250, 255, cv2.THRESH_BINARY)
 
+	outputFilenameBinarized = fileStem[ii]+'_recon_avg_binarized.png'
+	cv2.imwrite(os.path.join(pathOutput, 'Average', outputFilenameBinarized), fakeImageBW);
+
 	# binarize the images
 	fakeImageBW[fakeImageBW==0] = 1
 	fakeImageBW[fakeImageBW==255] = 0;
@@ -232,7 +235,7 @@ plt.ylabel("Frequency", fontsize=22)
 plt.hist(mccResults, color="#3F5D7D", edgecolor="k")  
 
 fig = plt.gcf()
-fig.savefig('/home/Documents/placenta/data/'+str(now.strftime("%Y-%m-%d"))+'-test-averaged-MCCValuesHist-8-20-new-test.png', bbox_inches="tight")
+fig.savefig(pathOutput+str(now.strftime("%Y-%m-%d"))+'-test-averaged-MCCValuesHist.png', bbox_inches="tight")
 
 # initialize dataframe
 df = pd.DataFrame({'MCC': mccResults, 'group': 'Test dataset'})
@@ -259,13 +262,13 @@ for x, val, clevel in zip(xs, vals, clevels):
     plt.scatter(x, val, c=cm.prism(clevel), alpha=0.4)
 
 fig = plt.gcf()
-fig.savefig('/home/Documents/placenta/data//'+now.strftime("%Y-%m-%d")+'-test-averaged-MCCValuesBoxPlot-8-20-new-test.png', bbox_inches="tight")
+fig.savefig(pathOutput+now.strftime("%Y-%m-%d")+'-test-averaged-MCCValuesBoxPlot.png', bbox_inches="tight")
 
 
-plt.figure(figsize=(12, 12))  
-plt.scatter(mccResults,mccResultsAveraged)
-plt.plot([0.65, 0.86], [0.65, 0.86], ls="--", c=".3")
-plt.xlabel("MCC", fontsize=22)  
-plt.ylabel("MCC Overlapping average", fontsize=22)  
-fig2 = plt.gcf()
-fig2.savefig('/home/Documents/placenta/data//'+now.strftime("%Y-%m-%d")+'-averaged-non-averaged.png', bbox_inches="tight")
+# plt.figure(figsize=(12, 12))  
+# plt.scatter(mccResults,mccResultsAveraged)
+# plt.plot([0.65, 0.86], [0.65, 0.86], ls="--", c=".3")
+# plt.xlabel("MCC", fontsize=22)  
+# plt.ylabel("MCC Overlapping average", fontsize=22)  
+# fig2 = plt.gcf()
+# fig2.savefig('/home/Documents/placenta/data//'+now.strftime("%Y-%m-%d")+'-averaged-non-averaged.png', bbox_inches="tight")

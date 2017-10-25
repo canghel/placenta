@@ -63,10 +63,12 @@ def cropRotateOverlay(filename, inputdir, outputdir):
 				# get the number of the part
 				part = (nofc-1)*rr + cc + 1;
 				# get the start and end indices of the image
-				rStart = 256*rr + translationValue[ii]-1;
-				rEnd = 256*(rr+1) + translationValue[ii]-1;
-				cStart = 256*cc + translationValue[ii]-1;
-				cEnd = 256*(cc+1) + translationValue[ii]-1;
+				rStart = 256*rr + translationValue[ii]; # if rr is 0 will start at 65th value, say
+				rEnd = 256*(rr+1) + translationValue[ii];
+				cStart = 256*cc + translationValue[ii];
+				cEnd = 256*(cc+1) + translationValue[ii];
+
+				rStart
 
 				output = newimg[rStart:rEnd,cStart:cEnd,:];
 				
