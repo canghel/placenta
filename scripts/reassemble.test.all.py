@@ -30,8 +30,9 @@ import numpy as np
 ### PATHS #####################################################################
 
 pathTraces = "/home/Documents/placenta/data/Traces/Pre-processed/"
-pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/2017-10-23-test_latest/images"
-pathOutput = "/home/Documents/placenta/data/2017-10-23-Reconstructed"
+#pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/2017-10-23-test_latest/images"
+pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/2017-08-20-placenta_pix2pix/test_latest/images/"
+pathOutput = "/home/Documents/placenta/data/2017-10-24-Reconstructed"
 
 ### FIND FILENAME STEM FOR EACH PLACENTA #####################################
 
@@ -107,7 +108,7 @@ for ii in range(0, numFullTest):
 	output[rStart:rEnd,cStart:cEnd,:] = (output[rStart:rEnd,cStart:cEnd,:]/3 +
 		outputTrans128[0:(rr-64), 0:64,:]/3 +
 		outputTrans64[64:rr, 64:128,:]/3)
-	cv2.imwrite(os.path.join(pathOutput, 'Average', 'test.png'), output);
+	# cv2.imwrite(os.path.join(pathOutput, 'Average', 'test.png'), output);
 
 	# test = np.ones((output[rStart:rEnd,cStart:cEnd,:].shape))*255
 
@@ -126,15 +127,15 @@ for ii in range(0, numFullTest):
 	output[rStart:rEnd,cStart:cEnd,:] = (output[rStart:rEnd,cStart:cEnd,:]/3 +
 		outputTrans128[64:rr, (cc-64):cc,:]/3 +
 		outputTrans192[0:(rr-64), (cc-128):(cc-64),:]/3)
-	cv2.imwrite(os.path.join(pathOutput, 'Average', 'test.png'), output);
+	# cv2.imwrite(os.path.join(pathOutput, 'Average', 'test.png'), output);
 
-	test = np.ones((output[rStart:rEnd,cStart:cEnd,:].shape))*255
+	# test = np.ones((output[rStart:rEnd,cStart:cEnd,:].shape))*255
 
-	test = (test/3 +
-		outputTrans128[64:rr, (cc-64):cc,:]/3 +
-		outputTrans192[0:(rr-64), (cc-128):(cc-64),:]/3)
+	# test = (test/3 +
+	# 	outputTrans128[64:rr, (cc-64):cc,:]/3 +
+	# 	outputTrans192[0:(rr-64), (cc-128):(cc-64),:]/3)
 
-	cv2.imwrite(os.path.join(pathOutput, 'Average', 'test.png'), test);
+	# cv2.imwrite(os.path.join(pathOutput, 'Average', 'test.png'), test);
 
 	# bottom rectangle ------------------------------------------------------------
 	rStart = 256*nofr - 192;
@@ -145,15 +146,15 @@ for ii in range(0, numFullTest):
 	output[rStart:rEnd,cStart:cEnd,:] = (output[rStart:rEnd,cStart:cEnd,:]/3 +
 		outputTrans128[(rr-64):rr, 64:(cc-64),:]/3 +
 		outputTrans192[(rr-128):(rr-64), 0:(cc-128),:]/3)
-	cv2.imwrite(os.path.join(pathOutput, 'Average', 'test.png'), output);
+	# cv2.imwrite(os.path.join(pathOutput, 'Average', 'test.png'), output);
 
-	test = np.ones((output[rStart:rEnd,cStart:cEnd,:].shape))*255
+	# test = np.ones((output[rStart:rEnd,cStart:cEnd,:].shape))*255
 
-	test = (test/3 +
-		outputTrans128[(rr-64):rr, 64:(cc-64),:]/3 +
-		outputTrans192[(rr-128):(rr-64), 0:(cc-128),:]/3)
+	# test = (test/3 +
+	# 	outputTrans128[(rr-64):rr, 64:(cc-64),:]/3 +
+	# 	outputTrans192[(rr-128):(rr-64), 0:(cc-128),:]/3)
 
-	cv2.imwrite(os.path.join(pathOutput, 'Average', 'test2.png'), test);
+	# cv2.imwrite(os.path.join(pathOutput, 'Average', 'test2.png'), test);
 
 
 	# top rectangle ---------------------------------------------------------------
@@ -165,20 +166,20 @@ for ii in range(0, numFullTest):
 	output[rStart:rEnd,cStart:cEnd,:] = (output[rStart:rEnd,cStart:cEnd,:]/3 +
 		outputTrans128[0:64, 64:(cc-64),:]/3 +
 		outputTrans64[64:128, 128:cc,:]/3)
-	cv2.imwrite(os.path.join(pathOutput, 'Average', 'test.png'), output);
+	# cv2.imwrite(os.path.join(pathOutput, 'Average', 'test.png'), output);
 
 	test = np.ones((output[rStart:rEnd,cStart:cEnd,:].shape))*255
 
-	test = (test/3 + 
-		outputTrans128[0:64, 64:(cc-64),:]/3 +
-		outputTrans64[64:128, 128:cc,:]/3)
+	# test = (test/3 + 
+	# 	outputTrans128[0:64, 64:(cc-64),:]/3 +
+	# 	outputTrans64[64:128, 128:cc,:]/3)
 
-	cv2.imwrite(os.path.join(pathOutput, 'Average', 'test3.png'), test);
+	# cv2.imwrite(os.path.join(pathOutput, 'Average', 'test3.png'), test);
 
 	hist,bins = np.histogram(output.ravel(),256,[0,256])
 	plt.hist(output.ravel(),256,[0,256]);
 	fig = plt.gcf()
-	fig.savefig('/home/Documents/placenta/data/'+now.strftime("%Y-%m-%d")+'pixel-values.png')
+	fig.savefig('/home/Documents/placenta/data/'+now.strftime("%Y-%m-%d")+'pixel-values-8-20-new-test.png')
 	# plt.close(fig)
 
 	# output = cv2.threshold(output, threshValue, 255, cv2.THRESH_BINARY);
@@ -231,7 +232,7 @@ plt.ylabel("Frequency", fontsize=22)
 plt.hist(mccResults, color="#3F5D7D", edgecolor="k")  
 
 fig = plt.gcf()
-fig.savefig('/home/Documents/placenta/data/'+str(now.strftime("%Y-%m-%d"))+'-test-averaged-MCCValuesHist.png', bbox_inches="tight")
+fig.savefig('/home/Documents/placenta/data/'+str(now.strftime("%Y-%m-%d"))+'-test-averaged-MCCValuesHist-8-20-new-test.png', bbox_inches="tight")
 
 # initialize dataframe
 df = pd.DataFrame({'MCC': mccResults, 'group': 'Test dataset'})
@@ -258,4 +259,13 @@ for x, val, clevel in zip(xs, vals, clevels):
     plt.scatter(x, val, c=cm.prism(clevel), alpha=0.4)
 
 fig = plt.gcf()
-fig.savefig('/home/Documents/placenta/data//'+now.strftime("%Y-%m-%d")+'-test-averaged-MCCValuesBoxPlot.png', bbox_inches="tight")
+fig.savefig('/home/Documents/placenta/data//'+now.strftime("%Y-%m-%d")+'-test-averaged-MCCValuesBoxPlot-8-20-new-test.png', bbox_inches="tight")
+
+
+plt.figure(figsize=(12, 12))  
+plt.scatter(mccResults,mccResultsAveraged)
+plt.plot([0.65, 0.86], [0.65, 0.86], ls="--", c=".3")
+plt.xlabel("MCC", fontsize=22)  
+plt.ylabel("MCC Overlapping average", fontsize=22)  
+fig2 = plt.gcf()
+fig2.savefig('/home/Documents/placenta/data//'+now.strftime("%Y-%m-%d")+'-averaged-non-averaged.png', bbox_inches="tight")
