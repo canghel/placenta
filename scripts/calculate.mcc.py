@@ -35,7 +35,7 @@ now = datetime.datetime.now()
 trainValOrTest = 'test';
 if (trainValOrTest=="test"):
 	pathReal = "/home/Documents/placenta/data/testTraces";
-	pathFake = "/home/Documents/placenta/data/2017-10-19-Reconstructed/CroppedAverage/"
+	pathFake = "/home/Documents/placenta/data/2017-10-24-Reconstructed/CroppedAverageTrans0/"
 else:
 	pathReal = "/home/Documents/placenta/data/Traces/Pre-processed";
 	pathFake = "/home/Documents/placenta/data/2017-10-19-Reconstructed"+trainValOrTest.capitalize()+"/CroppedAverage/"
@@ -97,7 +97,7 @@ print('------------------------------------------------------')
 
 ### SAVE RESULTS TO FILE ######################################################
 
-np.savetxt('/home/Documents/placenta/data/'+str(now.strftime("%Y-%m-%d"))+'-'+trainValOrTest+'MCCValues.txt', mccResults)
+np.savetxt('/home/Documents/placenta/data/'+str(now.strftime("%Y-%m-%d"))+'-'+trainValOrTest+'MCCValues-8-20-new-tet.txt', mccResults)
 
 ### PLOT A HISTOGRAM OF RESULTS ###############################################
 
@@ -119,7 +119,7 @@ plt.ylabel("Frequency", fontsize=22)
 plt.hist(mccResults, color="#3F5D7D", edgecolor="k")  
 
 fig = plt.gcf()
-fig.savefig('/home/Documents/placenta/data/'+str(now.strftime("%Y-%m-%d"))+'-'+trainValOrTest+'-MCCValuesHist.png', bbox_inches="tight")
+fig.savefig('/home/Documents/placenta/data/'+str(now.strftime("%Y-%m-%d"))+'-'+trainValOrTest+'-MCCValuesHist-8-20-new-test.png', bbox_inches="tight")
 # plt.close(fig)
 
 # plot a histogram of mccResults
@@ -160,4 +160,4 @@ for x, val, clevel in zip(xs, vals, clevels):
     plt.scatter(x, val, c=cm.prism(clevel), alpha=0.4)
 
 fig = plt.gcf()
-fig.savefig('/home/Documents/placenta/data//'+now.strftime("%Y-%m-%d")+'-testMCCValuesBoxPlot.png', bbox_inches="tight")
+fig.savefig('/home/Documents/placenta/data//'+now.strftime("%Y-%m-%d")+'-testMCCValuesBoxPlot-8-20-new-test.png', bbox_inches="tight")
