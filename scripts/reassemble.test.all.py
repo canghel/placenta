@@ -11,6 +11,9 @@ import fnmatch
 import re
 import sys, traceback
 import matplotlib.pyplot as plt
+from matplotlib import cm
+# not quite sure what pandas are yet
+import pandas as pd
 
 # datetime
 import datetime
@@ -25,14 +28,17 @@ import scipy.misc
 from sklearn.metrics import matthews_corrcoef
 from sklearn import preprocessing
 import scipy.misc
+import scipy.stats
 import numpy as np
 
 ### PATHS #####################################################################
 
 pathTraces = "/home/Documents/placenta/data/Traces/Pre-processed/"
-#pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/2017-10-23-test_latest/images"
-pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/2017-10-19-placenta_pix2pix/test_latest/images/"
-pathOutput = "/home/Documents/placenta/data/2017-10-23-Reconstructed/"
+# pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/2017-10-23-test_latest/images"
+# pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/2017-10-19-placenta_pix2pix/test_latest/images/"
+# pathOutput = "/home/Documents/placenta/data/2017-10-23-Reconstructed/"
+pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/2017-08-20-placenta_pix2pix/test_latest/images/"
+pathOutput = "/home/Documents/placenta/data/2017-10-24-Reconstructed"
 
 ### FIND FILENAME STEM FOR EACH PLACENTA #####################################
 
@@ -48,6 +54,10 @@ numFullTest = len(fileStem);
 translationValue = [64, 128, 192]
 
 mccResults = []
+sensitivity = []
+specificity = []
+precision = []
+F1score = []
 # loop over files
 for ii in range(0, numFullTest):
 	print('--- Working on file '+str(ii+1)+' --------------------------------')
@@ -179,7 +189,7 @@ for ii in range(0, numFullTest):
 	hist,bins = np.histogram(output.ravel(),256,[0,256])
 	plt.hist(output.ravel(),256,[0,256]);
 	fig = plt.gcf()
-	fig.savefig('/home/Documents/placenta/data/'+now.strftime("%Y-%m-%d")+'pixel-values-8-20-new-test.png')
+	fig.savefig(os.path.join(pathOutput, str(now.strftime("%Y-%m-%d"))+'pixel-vals.png'))
 	# plt.close(fig)
 
 	# output = cv2.threshold(output, threshValue, 255, cv2.THRESH_BINARY);
@@ -206,6 +216,14 @@ for ii in range(0, numFullTest):
 	# fakeImageBin = lb.transform(fakeImageBW)
 
 	# calculate MCC 
+	TP = len(np.intersect1d(np.where(realImageBW.ravel()==1), np.where(fakeImageBW.ravel()==1)));
+	TN = len(np.intersect1d(np.where(realImageBW.ravel()==0), np.where(fakeImageBW.ravel()==0)));
+	FP = len(np.intersect1d(np.where(realImageBW.ravel()==0), np.where(fakeImageBW.ravel()==1)));
+	FN = len(np.intersect1d(np.where(realImageBW.ravel()==1), np.where(fakeImageBW.ravel()==0)));
+	sensitivity.append(TP/(TP+FN))
+	specificity.append(TN/(TN+FP))
+	precision.append(TP/(TP+FP))
+	F1score.append(2*TP/(2*TP+FP+FN))
 	mccResults.append(matthews_corrcoef(realImageBW.ravel(), fakeImageBW.ravel()))
 
 print('--- Results summary -----------------------------------')
@@ -213,6 +231,10 @@ print('Min:'+str(np.min(mccResults)))
 print('Mean:'+str(np.mean(mccResults)))
 print('Median:'+str(np.median(mccResults)))
 print('Max:'+str(np.max(mccResults)))
+print(scipy.stats.describe(sensitivity))
+print(scipy.stats.describe(specificity))
+print(scipy.stats.describe(precision))
+print(scipy.stats.describe(F1score))
 print('------------------------------------------------------')
 
 ### PLOTS #####################################################################
@@ -272,3 +294,49 @@ fig.savefig(pathOutput+now.strftime("%Y-%m-%d")+'-test-averaged-MCCValuesBoxPlot
 # plt.ylabel("MCC Overlapping average", fontsize=22)  
 # fig2 = plt.gcf()
 # fig2.savefig('/home/Documents/placenta/data//'+now.strftime("%Y-%m-%d")+'-averaged-non-averaged.png', bbox_inches="tight")
+
+plt.figure(figsize=(12, 12))  
+  
+ax = plt.subplot(111)  
+ax.spines["top"].set_visible(False)  
+ax.spines["right"].set_visible(False)  
+  
+ax.get_xaxis().tick_bottom()  
+ax.get_yaxis().tick_left()  
+  
+plt.xticks(fontsize=18) 
+plt.yticks(fontsize=18)  
+  
+plt.xlabel("F1 score", fontsize=22)  
+plt.ylabel("Frequency", fontsize=22)  
+  
+plt.hist(F1score, color="#3F5D7D", edgecolor="k")  
+
+fig = plt.gcf()
+fig.savefig(pathOutput+str(now.strftime("%Y-%m-%d"))+'-test-averaged-F1score.png', bbox_inches="tight")
+
+plt.figure(figsize=(12, 12))  
+  
+ax = plt.subplot(111)  
+ax.spines["top"].set_visible(False)  
+ax.spines["right"].set_visible(False)  
+  
+ax.get_xaxis().tick_bottom()  
+ax.get_yaxis().tick_left()  
+  
+plt.xticks(fontsize=18) 
+plt.yticks(fontsize=18)  
+  
+plt.xlabel("Precision", fontsize=22)  
+plt.ylabel("Frequency", fontsize=22)  
+  
+plt.hist(precision, color="#3F5D7D", edgecolor="k")  
+
+fig = plt.gcf()
+fig.savefig(pathOutput+str(now.strftime("%Y-%m-%d"))+'-test-averaged-precision.png', bbox_inches="tight")
+
+blur = cv2.blur(output,(20,2),0)
+cv2.imwrite(os.path.join(pathOutput, 'Average', 'blur1.png'), blur);
+
+diff = output < blur
+cv2.imwrite(os.path.join(pathOutput, 'Average', 'diffFromblur.png'), (diff.astype('uint8')-1)*(-255));
