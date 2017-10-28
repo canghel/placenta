@@ -1,0 +1,28 @@
+### SET UP THE A AND B CLASS DATA #############################################
+
+# combine the A and B datasets
+python3.6 ./datasets/combine_A_and_B.py --fold_A ./datasets/placenta/photosCroppedForNN --fold_B ./datasets/placenta/tracesCroppedForNN --fold_AB ./datasets/placenta/
+
+### TRAIN GAN #################################################################
+
+# the command to run the training
+# set up options to have loadsize be 286
+# added a random.seed(123) to the train script for reproduibility
+python3.6 train.py > ./logs/2017-10-28-output-train.txt
+
+### RUN THE SMALL SQUARES FOR TEST, VAL, AND TRAIN THRU GAN ###################
+
+# the command to run the testing
+# set up options to have loadsize be 256
+# !!! NOTE: Save original options and loss-log in checkpoint before doing this !!!
+time python3.6 test.py --how_many 7124 --dataroot /home/Documents/placenta/data/photos/croppedOverlapping/test --name placenta_pix2pix --model test --which_model_netG unet_256 --which_direction AtoB --loadSize 256 --dataset_mode single --resize_or_crop crop  > ./logs/2017-10-28-output-test.txt
+
+# validation 
+# !!! NOTE: Rename test_latest results to 2017-10-28-test_latest-test before running this !!!
+time python3.6 test.py --how_many 7536 --dataroot /home/Documents/placenta/data/photos/croppedOverlapping/val --name placenta_pix2pix --model test --which_model_netG unet_256 --which_direction AtoB --loadSize 256 --dataset_mode single --resize_or_crop crop  > ./logs/2017-10-28-output-val-test.txt
+
+# train
+# !!! NOTE: Rename test_latest results to 2017-10-28-test_latest-val before running this !!!
+time python3.6 test.py --how_many 22396 --dataroot /home/Documents/placenta/data/photos/croppedOverlapping/train --name placenta_pix2pix --model test --which_model_netG unet_256 --which_direction AtoB --loadSize 256 --dataset_mode single --resize_or_crop crop  > ./logs/2017-10-28-output-train-test.txt
+
+# !!! NOTE: Rename test_latest results to 2017-10-28-test_latest-train in the final step !!!
