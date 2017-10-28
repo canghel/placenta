@@ -92,7 +92,6 @@ for ii in range(0, numFullTest):
 	rr = outputTrans64.shape[0]
 	cc = outputTrans64.shape[1]
 
-
 	output[rStart:rEnd,cStart:cEnd,:] = (output[rStart:rEnd,cStart:cEnd,:]/4 +
 		outputTrans192[0:(rr-128), 0:(cc-128),:]/4 +
 		outputTrans64[128:rr, 128:cc,:]/4 + 
@@ -142,15 +141,11 @@ for ii in range(0, numFullTest):
 	output[rStart:rEnd,cStart:cEnd,:] = (output[rStart:rEnd,cStart:cEnd,:]/3 +
 		outputTrans128[0:64, 64:(cc-64),:]/3 +
 		outputTrans64[64:128, 128:cc,:]/3)
-	# cv2.imwrite(os.path.join(pathOutput, 'Average', 'test.png'), output);
 
-	test = np.ones((output[rStart:rEnd,cStart:cEnd,:].shape))*255
-
-	hist,bins = np.histogram(output.ravel(),256,[0,256])
-	plt.hist(output.ravel(),256,[0,256]);
-	fig = plt.gcf()
-	fig.savefig(os.path.join(pathOutput, str(now.strftime("%Y-%m-%d"))+'pixel-vals.png'))
-	# plt.close(fig)
+	# hist,bins = np.histogram(output.ravel(),256,[0,256])
+	# plt.hist(output.ravel(),256,[0,256]);
+	# fig = plt.gcf()
+	# fig.savefig(os.path.join(pathOutput, str(now.strftime("%Y-%m-%d"))+'pixel-vals.png'))
 
 	outputFilename = fileStem[ii]+'_recon_avg.png'
 	cv2.imwrite(os.path.join(pathOutput, 'Average', outputFilename), output[0:traceImage.shape[0], 0:traceImage.shape[1],:]);
