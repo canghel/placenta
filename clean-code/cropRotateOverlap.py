@@ -98,26 +98,47 @@ from os.path import isfile, join
 import fnmatch
 import re
  
-### CROP FOR NN, NON-OVERLAPPING ##############################################
+# ### CROP FOR NN, NON-OVERLAPPING ##############################################
 
-photoOrTrace = ['traces', 'photos'];
+# photoOrTrace = ['traces', 'photos'];
+# dataset = ['train', 'val', 'test']
+
+# # loop over photos or loop over traces
+# for ii in range(0,2):
+# 	# loop over the three datasets
+# 	for jj in range(0,3):
+# 		print('--- Working on '+dataset[jj]+' files ----------------------')
+# 		inputdir = '/home/Documents/placenta/data/'+photoOrTrace[ii]+'/preprocessed/'+dataset[jj];
+# 		outputdir =  '/home/Documents/placenta/data/'+photoOrTrace[ii]+'/croppedForNN/'+dataset[jj];
+
+# 		print(inputdir)
+# 		print(outputdir)
+
+# 		## GET THE FILENAMES FOR TEST PHOTOS TO PROCESS ########################## 
+
+# 		inputFiles = fnmatch.filter(os.listdir(inputdir), '*.png');
+
+# 		for file in inputFiles:
+# 			print(file)
+# 			cropRotateOverlap(file, inputdir, outputdir, False)
+
+### CROP FOR NN, OVERLAPPING #####################################################
+
 dataset = ['train', 'val', 'test']
 
-# loop over photos or loop over traces
-for ii in range(0,2):
-	# loop over the three datasets
-	for jj in range(0,3):
-		print('--- Working on '+dataset[jj]+' files ----------------------')
-		inputdir = '/home/Documents/placenta/data/'+photoOrTrace[ii]+'/preprocessed/'+dataset[jj];
-		outputdir =  '/home/Documents/placenta/data/'+photoOrTrace[ii]+'/croppedForNN/'+dataset[jj];
+# loop over the three datasets
+for jj in range(0,3):
+	print('--- Working on '+dataset[jj]+' files ----------------------')
+	inputdir = '/home/Documents/placenta/data/photos/preprocessed/'+dataset[jj];
+	outputdir =  '/home/Documents/placenta/data/photos/croppedOverlapping/'+dataset[jj];
 
-		print(inputdir)
-		print(outputdir)
+	print(inputdir)
+	print(outputdir)
 
-		## GET THE FILENAMES FOR TEST PHOTOS TO PROCESS ########################## 
+	## GET THE FILENAMES FOR TEST PHOTOS TO PROCESS ########################## 
 
-		inputFiles = fnmatch.filter(os.listdir(inputdir), '*.png');
+	inputFiles = fnmatch.filter(os.listdir(inputdir), '*.png');
 
-		for file in inputFiles:
-			print(file)
-			cropRotateOverlap(file, inputdir, outputdir, False)
+	for file in inputFiles:
+		print(file)
+		cropRotateOverlap(file, inputdir, outputdir, True)
