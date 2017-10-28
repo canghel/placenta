@@ -5,7 +5,7 @@
 
 ### OPTIONS TO CHANGE #########################################################
 
-trainOrVal = "train"
+trainOrVal = "val"
 thresholdFileSize =  10240 # inspect file sizes that are smaller than this size
 probToMove = 0.8 # move them out of the folder with this probability
 
@@ -35,7 +35,7 @@ print("The number of placentas is", numPlacentas);
 
 ### MOVE (MOST) ALMOST BLANK SQUARES OUT OF DIRECTORY #########################
 
-random.seed(100);
+random.seed(123);
 
 numNearlyBlank = 0;
 for jj in range(0, numFiles):
