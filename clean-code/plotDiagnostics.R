@@ -59,7 +59,7 @@ mccResults = as.data.frame(mccResults);
 mccResults$MCC = as.numeric(as.character(mccResults$MCC));
 mccResults$Category = as.factor(paste0(mccResults$Dataset, "-", mccResults$Reconstruction));
 
-xyBounds <- c(0.625, 0.86)
+xyBounds <- c(0.64, 0.86)
 
 ### BOXPlOT CODE ##############################################################
 
