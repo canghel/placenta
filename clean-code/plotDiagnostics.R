@@ -72,8 +72,6 @@ mccResults$Order <- recode.vector(
         )
     );
 
-#colorPalette <- c('gray70', 'gray70', 'gray50', 'gray50', 'gray20', 'gray20')
-
 colors <- recode.vector(
     mccResults$Reconstruction,
     list(
@@ -92,12 +90,12 @@ create.boxplot(
     ylab.cex = 1.3,
     ylab.label = 'MCC',
     add.stripplot = TRUE,
-    points.col = colors, #colorPalette[as.numeric(mccResults$Order)],
+    points.col = colors,
     points.alpha = 1,
     resolution = 1000,
-    xaxis.lab = rep(c("non-avg", "avg"), 3), 
+    xaxis.lab = rep(c("Non-avg", "Avg"), 3), 
     xlab.label = c(" Train                         Val                         Test"),
-    ylimits = c(0.65, 0.87),
+    ylimits = c(0.64, 0.86),
     main = NULL, 
     # draw rectangle
     add.rectangle = TRUE,
@@ -107,4 +105,81 @@ create.boxplot(
     xright.rectangle = seq(1.5, 8.5, 2),
     col.rectangle = 'gray83',
     alpha.rectangle = 0.4
+    );
+
+### STATS TEST TO CHECK IF AVERAGING HELPED ###################################
+
+wilcoxTest <- list()
+
+# t.test(mccResults$MCC[mccResults$Category=="test-avg"], 
+# 	mccResults$MCC[mccResults$Category=="test-non-avg"], paired=TRUE)
+# t.test(mccResults$MCC[mccResults$Category=="val-avg"], 
+# 	mccResults$MCC[mccResults$Category=="val-non-avg"], paired=TRUE)
+# t.test(mccResults$MCC[mccResults$Category=="train-avg"], 
+# 	mccResults$MCC[mccResults$Category=="train-non-avg"], paired=TRUE)
+
+wilcoxTest[["test"]] <- wilcox.test(mccResults$MCC[mccResults$Category=="test-avg"], 
+	mccResults$MCC[mccResults$Category=="test-non-avg"], paired=TRUE)
+wilcoxTest[["val"]] <-  wilcox.test(mccResults$MCC[mccResults$Category=="val-avg"], 
+	mccResults$MCC[mccResults$Category=="val-non-avg"], paired=TRUE)
+wilcoxTest[["train"]] <- wilcox.test(mccResults$MCC[mccResults$Category=="train-avg"], 
+	mccResults$MCC[mccResults$Category=="train-non-avg"], paired=TRUE)
+
+
+### SCATTERPLOT TO SHOW IMPROVEMENT ###########################################
+
+scatterData <- data.frame(
+    avg = mccResults$MCC[mccResults[,"Reconstruction"]=="avg"],
+    nonavg = mccResults$MCC[mccResults[,"Reconstruction"]=="non-avg"],
+    dataset = mccResults$Dataset[mccResults[,"Reconstruction"]=="non-avg"]
+    );
+
+# levels(scatterData$dataset) <- c("train", "val", "test")
+
+scatterData$Order <- recode.vector(
+    scatterData$dataset,
+    list(
+        '1' = 'train',
+        '2' = 'val',
+        '3' = 'test'
+        )
+    );
+
+scatterData$Order <- as.factor(scatterData$Order)
+levels(scatterData$Order) <- c("Train", "Val", "Test");
+
+# sanity check
+print("Check if dataset is correct in scatter.data")
+print(identical(mccResults$Dataset[mccResults[,"Reconstruction"]=="non-avg"],
+	mccResults$Dataset[mccResults[,"Reconstruction"]=="avg"]))
+
+create.scatterplot(
+    file = file.path(pathOutput, generate.filename("MCC", "scatterplot-dataset", "png")),
+    height = 6, 
+    width = 11,
+    formula = avg ~ nonavg | Order,
+    data = scatterData,
+    main = NULL,
+    xlab.label = "Non-averaged MCC",
+    ylab.label = "Averaged MCC",
+    # xat = seq(0, 16, 2),
+    # yat = seq(0, 16, 2),
+    xlimits = c(0.64, 0.86),
+    ylimits = c(0.64, 0.86),
+    xaxis.cex = 0.75,
+    yaxis.cex = 0.75,
+    xaxis.fontface = 1,
+    yaxis.fontface = 1,
+    xlab.cex = 1.3,
+    ylab.cex = 1.3,
+    pch = 19,
+    col = alpha('gray20', 0.5),
+    # set up panel layout
+    layout = c(3,1),
+    resolution = 1000,
+    # add xy line
+    add.xyline = TRUE,
+    xyline.lty = 3,
+    xyline.col = 'grey',
+    xyline.lwd = 2
     );
