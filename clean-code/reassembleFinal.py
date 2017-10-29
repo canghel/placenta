@@ -33,8 +33,8 @@ import numpy as np
 
 ### FIND FILENAME STEM FOR EACH PLACENTA #####################################
 
-threshFake = 100;
-threshReal = 100;
+threshFake = 200;
+threshReal = 250;
 
 testFiles = fnmatch.filter(os.listdir(pathTest), '*_Trans_0_fake_B.png');
 
