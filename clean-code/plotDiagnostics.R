@@ -5,6 +5,7 @@
 ### PREAMBLE ##################################################################
 
 library(BoutrosLab.plotting.general);
+library(scales)
 
 ### FUNCTIONS #################################################################
 
@@ -28,35 +29,37 @@ mccResults <- NULL;
 
 # train
 mccResults <- concatenateData(mccResults,
-	inputFile = file.path(pathOutput, 'reconstructed-train', '2017-10-27-trans0-MCC-values-train.txt'),
+	inputFile = file.path(pathOutput, 'reconstructed-train', '2017-10-29-trans0-MCC-values-train.txt'),
 	dataset = 'train',
 	averaged = FALSE);
 mccResults <- concatenateData(mccResults,
-	inputFile = file.path(pathOutput,'reconstructed-train', '2017-10-27-averaged-MCC-values-train.txt'),
+	inputFile = file.path(pathOutput,'reconstructed-train', '2017-10-29-averaged-MCC-values-train.txt'),
 	dataset = 'train',
 	averaged = TRUE);
 # val
 mccResults <- concatenateData(mccResults,
-	inputFile = file.path(pathOutput, 'reconstructed-val', '2017-10-27-trans0-MCC-values-val.txt'),
+	inputFile = file.path(pathOutput, 'reconstructed-val', '2017-10-29-trans0-MCC-values-val.txt'),
 	dataset = 'val',
 	averaged = FALSE);
 mccResults <- concatenateData(mccResults,
-	inputFile = file.path(pathOutput,'reconstructed-val', '2017-10-27-averaged-MCC-values-val.txt'),
+	inputFile = file.path(pathOutput,'reconstructed-val', '2017-10-29-averaged-MCC-values-val.txt'),
 	dataset = 'val',
 	averaged = TRUE);
 # test
 mccResults <- concatenateData(mccResults,
-	inputFile = file.path(pathOutput, 'reconstructed-test', '2017-10-27-trans0-MCC-values-test.txt'),
+	inputFile = file.path(pathOutput, 'reconstructed-test', '2017-10-29-trans0-MCC-values-test.txt'),
 	dataset = 'test',
 	averaged = FALSE);
 mccResults <- concatenateData(mccResults,
-	inputFile = file.path(pathOutput,'reconstructed-test', '2017-10-27-averaged-MCC-values-test.txt'),
+	inputFile = file.path(pathOutput,'reconstructed-test', '2017-10-29-averaged-MCC-values-test.txt'),
 	dataset = 'test',
 	averaged = TRUE);
 colnames(mccResults) = c("MCC", "Dataset", "Reconstruction");
 mccResults = as.data.frame(mccResults);
 mccResults$MCC = as.numeric(as.character(mccResults$MCC));
 mccResults$Category = as.factor(paste0(mccResults$Dataset, "-", mccResults$Reconstruction));
+
+xyBounds <- c(0.625, 0.86)
 
 ### BOXPlOT CODE ##############################################################
 
@@ -81,7 +84,7 @@ colors <- recode.vector(
     );
 
 create.boxplot(
-    file = file.path(pathOutput, generate.filename("MCC", "boxplot", "png")),
+    file = file.path(pathOutput, "figures", generate.filename("MCC", "boxplot", "png")),
     formula =  MCC ~ Order, 
     data = mccResults,
     xaxis.cex = 0.8,
@@ -95,7 +98,7 @@ create.boxplot(
     resolution = 1000,
     xaxis.lab = rep(c("Non-avg", "Avg"), 3), 
     xlab.label = c(" Train                         Val                         Test"),
-    ylimits = c(0.64, 0.86),
+    ylimits = xyBounds,
     main = NULL, 
     # draw rectangle
     add.rectangle = TRUE,
@@ -125,6 +128,7 @@ wilcoxTest[["val"]] <-  wilcox.test(mccResults$MCC[mccResults$Category=="val-avg
 wilcoxTest[["train"]] <- wilcox.test(mccResults$MCC[mccResults$Category=="train-avg"], 
 	mccResults$MCC[mccResults$Category=="train-non-avg"], paired=TRUE)
 
+print(wilcoxTest)
 
 ### SCATTERPLOT TO SHOW IMPROVEMENT ###########################################
 
@@ -154,7 +158,7 @@ print(identical(mccResults$Dataset[mccResults[,"Reconstruction"]=="non-avg"],
 	mccResults$Dataset[mccResults[,"Reconstruction"]=="avg"]))
 
 create.scatterplot(
-    file = file.path(pathOutput, generate.filename("MCC", "scatterplot-dataset", "png")),
+    file = file.path(pathOutput, "figures", generate.filename("MCC", "scatterplot-dataset", "png")),
     height = 6, 
     width = 11,
     formula = avg ~ nonavg | Order,
@@ -164,8 +168,8 @@ create.scatterplot(
     ylab.label = "Averaged MCC",
     # xat = seq(0, 16, 2),
     # yat = seq(0, 16, 2),
-    xlimits = c(0.64, 0.86),
-    ylimits = c(0.64, 0.86),
+    xlimits = xyBounds,
+    ylimits = xyBounds,
     xaxis.cex = 0.75,
     yaxis.cex = 0.75,
     xaxis.fontface = 1,
@@ -173,7 +177,7 @@ create.scatterplot(
     xlab.cex = 1.3,
     ylab.cex = 1.3,
     pch = 19,
-    col = alpha('gray20', 0.5),
+    col = scales::alpha('gray20', 0.5),
     # set up panel layout
     layout = c(3,1),
     resolution = 1000,

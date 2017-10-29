@@ -2,6 +2,9 @@
 # - create a white mask around the placenta
 # - erase the perimeter from the trace pictures
 # - make traces black and white
+#
+# - !!! NOTE !!! One of the traces, T-BN1273150 does not come out well (inverse
+#   black and white) and it has to be processed by and
 
 # Reminder to self:
 # 0 = black

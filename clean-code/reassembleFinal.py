@@ -33,8 +33,8 @@ import numpy as np
 
 ### FIND FILENAME STEM FOR EACH PLACENTA #####################################
 
-threshFake = 210;
-threshReal = 250;
+threshFake = 100;
+threshReal = 100;
 
 testFiles = fnmatch.filter(os.listdir(pathTest), '*_Trans_0_fake_B.png');
 
@@ -152,8 +152,8 @@ for ii in range(0, numFullTest):
 
 	# cutoff
 	output=output[0:traceImage.shape[0], 0:traceImage.shape[1],:]
-	fakeThresh, fakeImageBW = cv2.threshold(output, 200, 255, cv2.THRESH_BINARY)
-	realThresh, realImageBW = cv2.threshold(traceImage, 250, 255, cv2.THRESH_BINARY)
+	fakeThresh, fakeImageBW = cv2.threshold(output, threshFake, 255, cv2.THRESH_BINARY)
+	realThresh, realImageBW = cv2.threshold(traceImage, threshReal, 255, cv2.THRESH_BINARY)
 
 	outputFilenameBinarized = fileStem[ii]+'_recon_avg_binarized.png'
 	cv2.imwrite(os.path.join(pathOutput, 'Average', outputFilenameBinarized), fakeImageBW);
