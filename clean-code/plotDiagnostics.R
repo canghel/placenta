@@ -95,7 +95,7 @@ create.boxplot(
     add.stripplot = TRUE,
     points.col = colors,
     points.alpha = 1,
-    resolution = 1000,
+    resolution = 2000,
     xaxis.lab = rep(c("Non-avg", "Avg"), 3), 
     xlab.label = c(" Train                         Val                         Test"),
     ylimits = xyBounds,
@@ -110,80 +110,102 @@ create.boxplot(
     alpha.rectangle = 0.4
     );
 
-### STATS TEST TO CHECK IF AVERAGING HELPED ###################################
 
-wilcoxTest <- list()
+mccResultsSubset <- mccResults[which(mccResults$Reconstruction=="avg"), ]
+mccResultsSubset$Order <- as.factor(mccResultsSubset$Order);
+create.boxplot(
+    file = file.path(pathOutput, "figures", generate.filename("MCC", "boxplot-avg-subset", "png")),
+    formula =  MCC ~ Order, 
+    data = mccResultsSubset,
+    xaxis.cex = 1.5,
+    yaxis.cex = 1.5,
+    xlab.cex = 2.3,
+    ylab.cex = 2.3,
+    ylab.label = 'MCC',
+    add.stripplot = TRUE,
+    points.col = 'gray60',
+    points.alpha = 1,
+    resolution = 1500,
+    xaxis.lab = c("Train", "Val", "Test"), 
+    xlab.label = "",
+    ylimits = xyBounds,
+    main = NULL, 
+    );
 
-# t.test(mccResults$MCC[mccResults$Category=="test-avg"], 
+# ### STATS TEST TO CHECK IF AVERAGING HELPED ###################################
+
+# wilcoxTest <- list()
+
+# # t.test(mccResults$MCC[mccResults$Category=="test-avg"], 
+# # 	mccResults$MCC[mccResults$Category=="test-non-avg"], paired=TRUE)
+# # t.test(mccResults$MCC[mccResults$Category=="val-avg"], 
+# # 	mccResults$MCC[mccResults$Category=="val-non-avg"], paired=TRUE)
+# # t.test(mccResults$MCC[mccResults$Category=="train-avg"], 
+# # 	mccResults$MCC[mccResults$Category=="train-non-avg"], paired=TRUE)
+
+# wilcoxTest[["test"]] <- wilcox.test(mccResults$MCC[mccResults$Category=="test-avg"], 
 # 	mccResults$MCC[mccResults$Category=="test-non-avg"], paired=TRUE)
-# t.test(mccResults$MCC[mccResults$Category=="val-avg"], 
+# wilcoxTest[["val"]] <-  wilcox.test(mccResults$MCC[mccResults$Category=="val-avg"], 
 # 	mccResults$MCC[mccResults$Category=="val-non-avg"], paired=TRUE)
-# t.test(mccResults$MCC[mccResults$Category=="train-avg"], 
+# wilcoxTest[["train"]] <- wilcox.test(mccResults$MCC[mccResults$Category=="train-avg"], 
 # 	mccResults$MCC[mccResults$Category=="train-non-avg"], paired=TRUE)
 
-wilcoxTest[["test"]] <- wilcox.test(mccResults$MCC[mccResults$Category=="test-avg"], 
-	mccResults$MCC[mccResults$Category=="test-non-avg"], paired=TRUE)
-wilcoxTest[["val"]] <-  wilcox.test(mccResults$MCC[mccResults$Category=="val-avg"], 
-	mccResults$MCC[mccResults$Category=="val-non-avg"], paired=TRUE)
-wilcoxTest[["train"]] <- wilcox.test(mccResults$MCC[mccResults$Category=="train-avg"], 
-	mccResults$MCC[mccResults$Category=="train-non-avg"], paired=TRUE)
+# print(wilcoxTest)
 
-print(wilcoxTest)
+# ### SCATTERPLOT TO SHOW IMPROVEMENT ###########################################
 
-### SCATTERPLOT TO SHOW IMPROVEMENT ###########################################
+# scatterData <- data.frame(
+#     avg = mccResults$MCC[mccResults[,"Reconstruction"]=="avg"],
+#     nonavg = mccResults$MCC[mccResults[,"Reconstruction"]=="non-avg"],
+#     dataset = mccResults$Dataset[mccResults[,"Reconstruction"]=="non-avg"]
+#     );
 
-scatterData <- data.frame(
-    avg = mccResults$MCC[mccResults[,"Reconstruction"]=="avg"],
-    nonavg = mccResults$MCC[mccResults[,"Reconstruction"]=="non-avg"],
-    dataset = mccResults$Dataset[mccResults[,"Reconstruction"]=="non-avg"]
-    );
+# # levels(scatterData$dataset) <- c("train", "val", "test")
 
-# levels(scatterData$dataset) <- c("train", "val", "test")
+# scatterData$Order <- recode.vector(
+#     scatterData$dataset,
+#     list(
+#         '1' = 'train',
+#         '2' = 'val',
+#         '3' = 'test'
+#         )
+#     );
 
-scatterData$Order <- recode.vector(
-    scatterData$dataset,
-    list(
-        '1' = 'train',
-        '2' = 'val',
-        '3' = 'test'
-        )
-    );
+# scatterData$Order <- as.factor(scatterData$Order)
+# levels(scatterData$Order) <- c("Train", "Val", "Test");
 
-scatterData$Order <- as.factor(scatterData$Order)
-levels(scatterData$Order) <- c("Train", "Val", "Test");
+# # sanity check
+# print("Check if dataset is correct in scatter.data")
+# print(identical(mccResults$Dataset[mccResults[,"Reconstruction"]=="non-avg"],
+# 	mccResults$Dataset[mccResults[,"Reconstruction"]=="avg"]))
 
-# sanity check
-print("Check if dataset is correct in scatter.data")
-print(identical(mccResults$Dataset[mccResults[,"Reconstruction"]=="non-avg"],
-	mccResults$Dataset[mccResults[,"Reconstruction"]=="avg"]))
-
-create.scatterplot(
-    file = file.path(pathOutput, "figures", generate.filename("MCC", "scatterplot-dataset", "png")),
-    height = 6, 
-    width = 11,
-    formula = avg ~ nonavg | Order,
-    data = scatterData,
-    main = NULL,
-    xlab.label = "Non-averaged MCC",
-    ylab.label = "Averaged MCC",
-    # xat = seq(0, 16, 2),
-    # yat = seq(0, 16, 2),
-    xlimits = xyBounds,
-    ylimits = xyBounds,
-    xaxis.cex = 0.75,
-    yaxis.cex = 0.75,
-    xaxis.fontface = 1,
-    yaxis.fontface = 1,
-    xlab.cex = 1.3,
-    ylab.cex = 1.3,
-    pch = 19,
-    col = scales::alpha('gray20', 0.5),
-    # set up panel layout
-    layout = c(3,1),
-    resolution = 1000,
-    # add xy line
-    add.xyline = TRUE,
-    xyline.lty = 3,
-    xyline.col = 'grey',
-    xyline.lwd = 2
-    );
+# create.scatterplot(
+#     file = file.path(pathOutput, "figures", generate.filename("MCC", "scatterplot-dataset", "png")),
+#     height = 6, 
+#     width = 11,
+#     formula = avg ~ nonavg | Order,
+#     data = scatterData,
+#     main = NULL,
+#     xlab.label = "Non-averaged MCC",
+#     ylab.label = "Averaged MCC",
+#     # xat = seq(0, 16, 2),
+#     # yat = seq(0, 16, 2),
+#     xlimits = xyBounds,
+#     ylimits = xyBounds,
+#     xaxis.cex = 0.75,
+#     yaxis.cex = 0.75,
+#     xaxis.fontface = 1,
+#     yaxis.fontface = 1,
+#     xlab.cex = 1.3,
+#     ylab.cex = 1.3,
+#     pch = 19,
+#     col = scales::alpha('gray20', 0.5),
+#     # set up panel layout
+#     layout = c(3,1),
+#     resolution = 1000,
+#     # add xy line
+#     add.xyline = TRUE,
+#     xyline.lty = 3,
+#     xyline.col = 'grey',
+#     xyline.lwd = 2
+#     );

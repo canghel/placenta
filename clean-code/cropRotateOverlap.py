@@ -124,21 +124,38 @@ import re
 
 ### CROP FOR NN, OVERLAPPING #####################################################
 
-dataset = ['train', 'val', 'test']
+# dataset = ['train', 'val', 'test']
 
-# loop over the three datasets
-for jj in range(0,3):
-	print('--- Working on '+dataset[jj]+' files ----------------------')
-	inputdir = '/home/Documents/placenta/data/photos/preprocessed/'+dataset[jj];
-	outputdir =  '/home/Documents/placenta/data/photos/croppedOverlapping/'+dataset[jj];
+# # loop over the three datasets
+# for jj in range(0,3):
+# 	print('--- Working on '+dataset[jj]+' files ----------------------')
+# 	inputdir = '/home/Documents/placenta/data/photos/preprocessed/'+dataset[jj];
+# 	outputdir =  '/home/Documents/placenta/data/photos/croppedOverlapping/'+dataset[jj];
 
-	print(inputdir)
-	print(outputdir)
+# 	print(inputdir)
+# 	print(outputdir)
 
-	## GET THE FILENAMES FOR TEST PHOTOS TO PROCESS ########################## 
+# 	## GET THE FILENAMES FOR TEST PHOTOS TO PROCESS ########################## 
 
-	inputFiles = fnmatch.filter(os.listdir(inputdir), '*.png');
+# 	inputFiles = fnmatch.filter(os.listdir(inputdir), '*.png');
 
-	for file in inputFiles:
-		print(file)
-		cropRotateOverlap(file, inputdir, outputdir, True)
+# 	for file in inputFiles:
+# 		print(file)
+# 		cropRotateOverlap(file, inputdir, outputdir, True)
+
+### CROP FOR NN, UNC DATASET ##################################################
+
+print('--- Working on  files ----------------------')
+inputdir = '/home/Documents/placenta-v2/data/multiscale-filter-img/photos/preprocessed';
+outputdir =  '/home/Documents/placenta-v2/data/multiscale-filter-img/photos/croppedOverlapping';
+
+print(inputdir)
+print(outputdir)
+
+## GET THE FILENAMES FOR TEST PHOTOS TO PROCESS ########################## 
+
+inputFiles = fnmatch.filter(os.listdir(inputdir), '*.png');
+
+for file in inputFiles:
+	print(file)
+	cropRotateOverlap(file, inputdir, outputdir, True)
