@@ -2,70 +2,80 @@
 
 The overaching goals of our work are to:
 
-*    distinguish the features of the placental chorionic surface vascular network which are associated with increased risk of Autism Spectrum Disorder (ASD), and
+*    distinguish the features of the placental chorionic surface vascular network which are associated with increased risk of Autism Spectrum Disorder (ASD) [[1](#ref-Chang2017)], and
 
 *    explore the effect of these features on function, in particular on oxygen transfer efficiency.
-
-Please see [article in preparation] for full details. 
 
 As a prerequisite to our first aim, we must extract the vascular network structure from photo images of the placenta.  The images here are taken either at delivery or upon pathological evaluation and are noisy due to the complexity and variation of the tissue itself (e.g. as compared to retinal vessels, say), as well as to the variation in photographic equiment, lighting, etc.  Manual extraction of the vascular network is time-consuming and expensive.  Thus, our goal here is to
 
 *    improve the automatic extraction of the vascular network structure. 
 
-The following is the documentation of the code for the neural network portion of our project.
- 
+The following is the documentation of the code for the neural network portion of our project.  For the full background, methodolgy and results, please see the following two articles (submitted):
+
+∗    C. Anghel, K. Archer, J.-M. Chang, A. Cochran, A. Radulescu, C.M. Salafia, R. Turner,
+K. Yacoubou Djuma, L. Zhong, "Placental vessel extraction using shearlets, laplacian eigenmaps
+and a conditional generative adversarial network," Springer, 2017
+
+*    C. Anghel, K. Archer, J.-M. Chang, A. Cochran, A. Radulescu, C.M. Salafia, R. Turner,
+K. Yacoubou Djuma, L. Zhong, "Simulations of the vascular network growth process for studying
+placenta structure and function associated with autism," Springer, 2017. 
 
 ## Data Pre-processing
 
-The National Children's Study (NCS) dataset consists of participants assumed to be representative of the general population, with unknown risk for autism.  The placentas were photographed and the vasculature manually traced using consistent protocols described in [[1](#ref-Chang2017)]. We received photographs of placentas already processed to remove glare and/or increase contrast. Thus, we begin with pairs of images of photos and traces for each placenta as shown below.
+The National Children's Study (NCS) dataset consists of participants assumed to be representative of the general population, with unknown risk for autism.  The placentas were photographed and the vasculature manually traced using consistent protocols described in [[1](#ref-Chang2017)]. We received photographs taken with a polarizing filter to remove glare. Thus, we begin with pairs of images of photos and traces for each placenta as shown below.
 
 <img align="center" src="img/preprocessing_raw_photo.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png" height="200" alt=""  class="inline"/>  <img align="center" src="img/preprocessing_raw_trace.png" height="200"  class="inline"/> 
 
-The first step is to adjust the background, crop, and convert the trace to black and white, using the script [`data.setup.initial.py`](https://github.com/canghel/placenta/blob/master/scripts/data.setup.initial.py ).
+The first step is to adjust the background, crop, and convert the trace to black and white, using the script [`dataSetupInitial.py`](https://github.com/canghel/placenta/blob/master/clean-code/dataSetupInitial.py).
 
 <img align="center" src="img/preprocessing_white_and_crop_photo.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="200" alt="" class="inline"/>  <img align="center" src="img/preprocessing_white_and_crop_trace.png" height="200"  class="inline"/> 
 
-We crop the images into non-overlapping squares of 256 by 256 pixels, to be passed into the neural network. The salient feature of the images is the vasculature, which does not have an up-down or left-right orientation. Thus we augment the training dataset by rotating the images by 0&deg;, 90&deg;, 180&deg; and 270&deg;. An internal option to the neural network also flips them horizontally.  The function to crop and rotate the images is [`cropandrotate.m`](https://github.com/canghel/placenta/blob/master/scripts/cropandrotate.m).  
+We crop the images into non-overlapping squares of 256 by 256 pixels, to be passed into the neural network. The salient feature of the images is the vasculature, which does not have an up-down or left-right orientation. Thus we augment the training dataset by rotating the images by 0&deg;, 90&deg;, 180&deg; and 270&deg;. An internal option to the neural network also flips them horizontally.  The function to crop and rotate the images is [`cropRotateOverlap.py`](https://github.com/canghel/placenta/blob/master/clean-code/cropRotateOverlap.py).  
 
 <img align="center" src="img/preprocessing_crop_photo_Angle_0.png" height="75"  class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_photo_Angle_90.png" height="75"  class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_photo_Angle_180.png" height="75"  class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_photo_Angle_270.png" height="75"  class="inline"/> 
 
 
 <img align="center" src="img/preprocessing_crop_trace_Angle_0.png" height="75"  class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_trace_Angle_90.png" height="75"  class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_trace_Angle_180.png" height="75"  class="inline"/> <img align="center" src="img/whitespace.png"  height="75" alt="" class="inline"/>  <img align="center" src="img/preprocessing_crop_trace_Angle_270.png" height="75"  class="inline"/> 
 
-## Conditional Generative Adversarial Network (cGAN)
+Before cropping, the photo and trace images were extended to a multiple of 256 pixels in length and width, creating more white (blank) space around the placenta. This allowed the entire placenta to be reconstructed, but also generated many blank or mostly-blank squares which are not informative for training.  In order to diminish the number of the blank or mostly-blank squares, we randomly removed 80\% of the images under 10 KB in size [`removeBlankSquares.py`](https://github.com/canghel/placenta/blob/master/clean-code/removeBlankSquares.py) 
 
-Recent advances in both computational resources and in deep learning research motivated us to revisit the neural network approach to blood vessel extraction from a new perspective.  The previous approach [[2](#Almoussa2011)] classified pixels of the image as "vessel" or "non-vessel" based of calculated features.  
+## `pix2pix` Conditional Generative Adversarial Network (cGAN)
+
+Recent advances in both computational resources and in deep learning research motivated us to revisit the neural network approach to blood vessel extraction from a new perspective.  The previous approach [[2](#Almoussa2011)] classified pixels of the image as "vessel" or "non-vessel" based on calculated features.  
 
 In contrast, we use a new type of convolutional neural network, a conditional generative adversarial network (cGAN) developed by Isola et al. [[3](#ref-Isola2016)] which works on pairs of images. Briefly, given one member of the pair (a photo of the placenta), the cGAN learns to generate the other (the corresponding trace) during training.  The [pix2pix website](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) (of the cGAN code) contains beautiful visualizations and additional references. 
 
-For training, inputs to the cGAN were cropped 256 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\times" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\times" title="\times" /></a> 256 pixel images of the placenta and the trace.  For testing, only the 256 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\times" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\times" title="\times" /></a> 256 pixel photo images were supplied. In all, there were 4748 training and 1536 validation pairs of images photo and corresponding trace) and 2764 testing images corresponding to 121, 38 and 42 placentas.
+For training, inputs to the cGAN were cropped 256 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\times" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\times" title="\times" /></a> 256 pixel images of the placenta and the trace.  For testing, only the 256 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\times" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\times" title="\times" /></a> 256 pixel photo images were supplied.  The resulting data set has 7210 training and 2357 validation images associated with 121 and 40 placentas, respectively. The remaining 40 placentas constituted the testing data set. (Note: In the future, we should use overlapping squares in training, as well as testing.)  
 
 Details of the set-up are as follows:
 
-*   Training Options: [`2017-08-20-output-train.txt`](https://github.com/canghel/placenta/blob/master/docs/2017-08-20-output-train.txt)
+*   Training Options: [`2017-10-29-options-train.txt`](https://github.com/canghel/placenta/blob/master/docs/2017-10-29-options-train.txt)
 
 *   Testing Options:
 
 ```shell
-time python3.6 test.py --how_many 2764 --dataroot ./datasets/placenta/testPhotosCroppedForNN/ --name 2017-08-20-placenta_pix2pix --model test --which_model_netG unet_256 --which_direction AtoB --dataset_mode single --resize_or_crop scale_width
+time python3.6 test.py --how_many 7124 --dataroot /home/Documents/placenta/data/photos/croppedOverlapping/test --name placenta_pix2pix --model test --which_model_netG unet_256 --which_direction AtoB --loadSize 256 --dataset_mode single --resize_or_crop crop
 ```
 
 We tested a different options for number of iterations and `loadSize` and `fineSize`, but we plan to conduct a more rigorous optimization of parameters in the future. 
 
 ## Reconstructing Full Traces
 
-To provide results consistent with previous studies [[2](#ref-Almoussa2011), [4](#ref-Cheng2013)], we needed to recover the full placental trace from the 256 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\times" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\times" title="\times" /></a> 256 cGAN-reconstucted trace images. This was done simply by "gluing" the smaller images together, using the script [`reassemble.test.py`](https://github.com/canghel/placenta/blob/master/scripts/reassemble.test.py).  We plan to modify this in the future, to obtain smoother reconstructions.
+To provide results consistent with previous studies [[2](#ref-Almoussa2011), [4](#ref-Cheng2013)], we needed to recover the full placental trace from the 256 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\times" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\times" title="\times" /></a> 256 cGAN-reconstucted trace images. This was done simply by "gluing" the smaller images together.
+
+Gluing non-overlapping squares resulted in a "tiling" effect, where vessels near the square's edges were not as well reconstructed.  To mitigate this effect, the 256 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\times" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\times" title="\times" /></a> 256 squares cropped from the testing images were overlapped.  The function is again [`cropRotateOverlap.py`](https://github.com/canghel/placenta/blob/master/clean-code/cropRotateOverlap.py), however with the option `overlap=True`.  
+
+The script [`runReassemble.py`](https://github.com/canghel/placenta/blob/master/clean-code/runReassemble.py) pieces together all of the small squares into an average trace.  
 
 Below are reconstructions of three placentas from the test set.  From left to right, the images are for the reconstructions with minimum, approximate mean, and maximum Matthews Correlation Coefficient values (see following section).  From top to bottom are the photograph, the reconstruction, and the manual ground truth trace. 
 
-
-<img align="center" src="img/Full-Reconstructions/worst_photo_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_photo_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_photo_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="200" class="inline"/> 
-
-
-<img align="center" src="img/Full-Reconstructions/worst_recon_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png_recon_avg.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_recon_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png_recon_avg.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_recon_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png_recon_avg.png" height="200"  class="inline"/> 
+<img align="center" src="img/Full-Reconstructions/worst_photo_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_photo_T-BN9900633_fetalsurface_fixed_ruler_lights_filter_12_0313-dd.png" height="200" class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_photo_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="200" class="inline"/> 
 
 
-<img align="center" src="img/Full-Reconstructions/worst_trace_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_trace_T-BN8949552_fetalsurface_fixed_ruler_lights_filter_12-0118-AG.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_trace_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="200"  class="inline"/> 
+<img align="center" src="img/Full-Reconstructions/worst_recon_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png_recon_avg.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_recon_T-BN9900633_fetalsurface_fixed_ruler_lights_filter_12_0313-dd.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_recon_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png_recon_avg.png" height="200"  class="inline"/> 
+
+
+<img align="center" src="img/Full-Reconstructions/worst_trace_T-BN9430295_fetalsurface_fixed_ruler_lights_filter_12_0207-ddnew.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/near_to_mean_trace_T-BN9900633_fetalsurface_fixed_ruler_lights_filter_12_0313-dd.png" height="200"  class="inline"/> <img align="center" src="img/whitespace.png"  height="100" alt="" class="inline"/>  <img align="center" src="img/Full-Reconstructions/best_trace_T-BN8789191_fetalsurface_fixed_ruler_lights_filter_11_0923-AG.png" height="200"  class="inline"/> 
 
 
 ## Quantitative Results
@@ -76,21 +86,25 @@ The results of this preliminary work are very promising. We used the Matthews Co
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=MCC&space;=&space;\frac{TP&space;\times&space;TN&space;-&space;FP&space;\times&space;FN}{\sqrt{(TP&space;&plus;&space;FP)(TP&space;&plus;&space;FN)(TN&space;&plus;&space;FP)(TN&space;&plus;&space;FN)}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?MCC&space;=&space;\frac{TP&space;\times&space;TN&space;-&space;FP&space;\times&space;FN}{\sqrt{(TP&space;&plus;&space;FP)(TP&space;&plus;&space;FN)(TN&space;&plus;&space;FP)(TN&space;&plus;&space;FN)}}" title="MCC = \frac{TP \times TN - FP \times FN}{\sqrt{(TP + FP)(TP + FN)(TN + FP)(TN + FN)}}" /></a>
 
-in comparing the cGAN-reconstructed trace against the ground-truth manual trace.  In previous work [[2](#ref-Almoussa2011), [4](#ref-Cheng2013)], the MCC for a similar dataset (the University of North Carolina Pregnancy, Infection, and Nutrition Study of 16 placentas was 0.4 or below.  In [[4](#ref-Cheng2013)], a figure compares box plots of the MCC values using the NN approach of [[2](#ref-Almoussa2011)] and the best MCC value for the multiscale-filter and the enhanced curvilinear filter methods.
+in comparing the cGAN-reconstructed trace against the ground-truth manual trace.  
 
-<img align="center" src="img/mccPlots/results_multiscale_and_nn.png" height="250"  class="inline"/>
-
-
-For the current work, the MCC value for the 42 placentas in the testing set was 0.74, with range from 0.66 to 0.82. The calculation is in the scripts [`calculate.mcc.py`](https://github.com/canghel/placenta/blob/master/scripts/calculate.mcc.py) and [`boxplot.of.mcc.py`](https://github.com/canghel/placenta/blob/master/scripts/boxplot.of.mcc.py).  Below are a histogram of the MCC values for the 42 placentas in the testing set and a box plot of the MCC for the training, validation and testing datasets.
+For the current work, the MCC value for the 40 placentas in the testing set was is 0.76, with range from 0.67 to 0.84. The calculation is in the scripts [`reassembleFinal.py`](https://github.com/canghel/placenta/blob/master/clean-code/reassembleFinal.py).  Below is a histogram of the MCC values for the 40 placentas in the testing set.
 
 <img align="center" src="img/mccPlots/mccValuesForTestHist.png" height="250"  class="inline"/> 
 
+The following boxplot  is in [`plotDiagnostics.R`](https://github.com/canghel/placenta/blob/master/clean-code/plotDiagnostics.R).   and a box plot of the MCC for the training, validation and testing datasets.
+
+
+
 <img align="center" src="img/mccPlots/mccValuesBoxPlot.png" height="250"  class="inline"/> 
 
+<!-- In previous work [[2](#ref-Almoussa2011), [4](#ref-Cheng2013)], the MCC for a similar dataset (the University of North Carolina Pregnancy, Infection, and Nutrition Study of 16 placentas was 0.4 or below.  In [[4](#ref-Cheng2013)], a figure compares box plots of the MCC values using the NN approach of [[2](#ref-Almoussa2011)] and the best MCC value for the multiscale-filter and the enhanced curvilinear filter methods.
+
+<img align="center" src="img/mccPlots/results_multiscale_and_nn.png" height="250"  class="inline"/> -->
 
 ## References 
 
-1. <a id="ref-Chang2017"></a> J.-M. Chang, H. Zeng, R. Han, Y.-M. Chang, R. Shah, C. Salafia, C. Newschaffer, R. Miller, P. Katzman, J. Moye, M. Fallin, C. Walker, L. Croen, "Autism risk classification using placental chorionic surface vascular network features," _Accepted for publication in BMC Medical Informatics and Decision Making_ (2017).  
+1. <a id="ref-Chang2017"></a> J.-M. Chang, H. Zeng, R. Han, Y.-M. Chang, R. Shah, C. Salafia, C. Newschaffer, R. Miller, P. Katzman, J. Moye, M. Fallin, C. Walker, L. Croen, ["Autism risk classification using placental chorionic surface vascular network features,"](https://bmcmedinformdecismak.biomedcentral.com/articles/10.1186/s12911-017-0564-8) _BMC Medical Informatics and Decision Making_ 17:162 (2017).  
 
 2. <a id="ref-Almoussa2011"></a> N. Almoussa, B. Dutra, B. Lampe, P. Getreuer, T. Wittman, C. Salafia, L. Vese. ["Automated Vasculature Extraction from Placenta Images,"](https://www.spiedigitallibrary.org/conference-proceedings-of-spie/7962/1/Automated-vasculature-extraction-from-placenta-images/10.1117/12.878343.short) _Proceedings of SPIE Medical Imaging Conference_ 7962 (2011).
 
@@ -115,11 +129,15 @@ The details for the cGAN are as follows:
 
 *   Training required 5.5 hours, but once trained the testing time was minimal (1m 32 s for all 2764 test images)
 
+For plotting, we used 
+
+* !!!!!!!!!!!!!!!!!!! (BPG here)
+
 ## Authors
 
 The imaging portion of the project was led by Jen-Mei Chang, Karamatou (Kara) Yacoubou Djima, and Catalina Anghel, with Kellie Archer, Amy Cochran, Anca Radulescu, Rebecca Turner, Lan Zhong.
 
-Dr. Carolyn Salafia and Ruchit Shah from [Placental Analytics, LLC](http://www.placentalanalytics.com/) provided the data, extensive biological knowledge and research support.
+Dr. Carolyn Salafia, Terri Girardi and Ruchit Shah from [Placental Analytics, LLC](http://www.placentalanalytics.com/) provided the data, extensive biological knowledge and research support.
 
 For data and medical expertise, the authors are Richard Miller, University of Rochester, NIH National Children’s Study Placenta Consortium; Philip J. Katzman, University of Rochester, NIH National Children’s Study Placenta Consortium; and Jack Moye, NICHD.
 
@@ -130,8 +148,10 @@ We gratefully acknowledge the support of the following organizations and persons
 
 *	The project was part of the [MBI Women Advancing Mathematical Biology: Understanding Complex Biological Systems with Mathematics 2017 Workshop](https://mbi.osu.edu/event/?id=1067 ).  The Mathematical Biosciences Institute sponsored the workshop, with support from Association for Women in Mathematics, The Society for Mathematical Biology, and Microsoft Research.
 
-*   Over the course of the project, we received biology expertise and support from Dr. Carolyn Salafia, Ruchit Shah, Dr. George Merz, and Dr. Richard K. Miller.
+*   Over the course of the project, we received biology expertise and support from Dr. Carolyn Salafia, Ruchit Shah, Terri Girardi, Dr. George Merz, and Dr. Richard K. Miller.
 
 *	The authors wish to thank the following people who contributed to the collection of the placentas in the National Children's Study Placenta Consortium: CJ Stodgell, L Salamone, LI Ruffolo, A Penmetsa, P Weidenborner (University of Rochester), J Culhane, S Wadlinger, M Pacholski,  MA Kent, L Green (University of Pennsylvania),  R Wapner, C Torres, J Perou (Columbia University), P Landrigan,  J Chen,  L Lambertini,  L Littman,  P Sheffield, A Golden, J Gilbert, C Lendor, S Allen, K Mantilla, Y Ma (Ichan School of Medicine),  S Leuthner, S Szabo (Medical College of Wisconsin), JL Dalton, D  Misra (Placenta Analytics), N Thiex, K Gutzman, A Martin, B Specker (South Dakota University),  J Swanson, C Holliday,  J Butler (University of California at Irvine),  A LI, RMAP S Dassanayake, J Nanes, Y Xia (University of Illinois at Chicago),  JC Murray,  TD Busch, J Rigdon (University of Iowa), Kjersti Aagaard, A Harris (Baylor College of Medicine), TH Darrah, E Campbell (Boston University), N Dole, J Thorp,  B Eucker, C Bell (University of North Carolina at Chapel Hill), EB Clark, MW Varner, E Taggart, J Billy, S Stradling, J Leavitt, W Bell, S Waterfall (University of Utah), B O'Brien, M Layton, D Todd, K Wilson, MS Durkin,  M-N Sandoval (Westat, Inc).
+
+*	CVA would like to thank Nelson Johansen for help in the GPU and Torch setup, and for very discussions on cGANs.  Gerald Quon also allowed some work time in October to December 2017 to be devoted to this project. 
 
 *	Most importantly, we thank the participants who donated their placentas.
