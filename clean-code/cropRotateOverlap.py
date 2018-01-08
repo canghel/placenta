@@ -143,16 +143,33 @@ import re
 # 		print(file)
 # 		cropRotateOverlap(file, inputdir, outputdir, True)
 
-### CROP FOR NN, UNC DATASET ##################################################
+# ### CROP FOR NN, UNC DATASET ##################################################
+
+# print('--- Working on  files ----------------------')
+# inputdir = '/home/Documents/placenta-v2/data/multiscale-filter-img/photos/preprocessed';
+# outputdir =  '/home/Documents/placenta-v2/data/multiscale-filter-img/photos/croppedOverlapping';
+
+# print(inputdir)
+# print(outputdir)
+
+# ## GET THE FILENAMES FOR TEST PHOTOS TO PROCESS ############################# 
+
+# inputFiles = fnmatch.filter(os.listdir(inputdir), '*.png');
+
+# for file in inputFiles:
+# 	print(file)
+# 	cropRotateOverlap(file, inputdir, outputdir, True)
+
+### CROP FOR NN, METHODIST DATASET ############################################
 
 print('--- Working on  files ----------------------')
-inputdir = '/home/Documents/placenta-v2/data/multiscale-filter-img/photos/preprocessed';
-outputdir =  '/home/Documents/placenta-v2/data/multiscale-filter-img/photos/croppedOverlapping';
+inputdir = "/home/Documents/placenta-v2/data/Methodist/photos/preprocessed"
+outputdir =  '/home/Documents/placenta-v2/data/Methodist/photos/croppedOverlapping/';
 
 print(inputdir)
 print(outputdir)
 
-## GET THE FILENAMES FOR TEST PHOTOS TO PROCESS ########################## 
+## GET THE FILENAMES FOR TEST PHOTOS TO PROCESS ############################### 
 
 inputFiles = fnmatch.filter(os.listdir(inputdir), '*.png');
 

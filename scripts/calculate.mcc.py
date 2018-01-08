@@ -62,8 +62,8 @@ for jj in range(0, numFiles):
 	realImage = cv2.imread(realImagePath, cv2.IMREAD_GRAYSCALE);
 	
 	# checked where to have a cutoff for black and white
-	fakeThresh, fakeImageBW = cv2.threshold(fakeImage, 250, 255, cv2.THRESH_BINARY)
-	realThresh, realImageBW = cv2.threshold(realImage, 254, 255, cv2.THRESH_BINARY)
+	fakeThresh, fakeImageBW = cv2.threshold(fakeImage, 240, 255, cv2.THRESH_BINARY)
+	realThresh, realImageBW = cv2.threshold(realImage, 250, 255, cv2.THRESH_BINARY)
 
 	# binarize the images
 	fakeImageBW[fakeImageBW==0] = 1

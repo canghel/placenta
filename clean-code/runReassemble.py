@@ -43,14 +43,20 @@
 ### UNC IMAGES ################################################################
 
 # paths
-pathTraces = "/home/Documents/placenta-v2/data/multiscale-filter-img/traces/preprocessed"
-pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/2017-12-03-test_latest/images/"
-pathOutput = "/home/Documents/placenta-v2/data/multiscale-filter-img/reconstructed/"
-filenameSuffix = "UNC"
+# pathTraces = "/home/Documents/placenta-v2/data/multiscale-filter-img/traces/preprocessed"
+# pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/2017-12-03-test_latest/images/"
+# pathOutput = "/home/Documents/placenta-v2/data/multiscale-filter-img/reconstructed/"
+# filenameSuffix = "UNC"
+
+# paths
+pathTraces = "/home/Documents/placenta-v2/data/Methodist/traces/preprocessed"
+pathTest = "/home/Documents/placenta/pytorch-CycleGAN-and-pix2pix/results/placenta_pix2pix/test_latest/images/"
+pathOutput = "/home/Documents/placenta-v2/data/Methodist/reconstructed/"
+filenameSuffix = "Methodist"
 
 # call each script
-# exec(open("./reassembleTranslation0.py").read(), globals())
-# exec(open("./reassembleOverlapping.py").read(), globals())
+exec(open("./reassembleTranslation0.py").read(), globals())
+exec(open("./reassembleOverlapping.py").read(), globals())
 exec(open("./reassembleFinal.py").read(), globals())
 
 # plt.close("all")

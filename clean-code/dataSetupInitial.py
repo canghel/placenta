@@ -22,11 +22,17 @@ import scipy.ndimage
 
 ### PATHS #####################################################################
 
-pathPhotos = "../../../data/photos/raw-photos"
-pathTraces = "../../../data/traces/raw-traces"
+#pathPhotos = "../../../data/photos/raw-photos"
+#pathTraces = "../../../data/traces/raw-traces"
 
-pathPhotosProcessed = "../../../data/photos/preprocessed"
-pathTracesProcessed = "../../../data/traces/preprocessed"
+pathPhotos = "/home/Documents/placenta-v2/data/Methodist/photos/raw-photos"
+pathTraces = "/home/Documents/placenta-v2/data/Methodist/traces/raw-traces"
+
+#pathPhotosProcessed = "../../../data/photos/preprocessed"
+#pathTracesProcessed = "../../../data/traces/preprocessed"
+
+pathPhotosProcessed = "/home/Documents/placenta-v2/data/Methodist/photos/preprocessed"
+pathTracesProcessed = "/home/Documents/placenta-v2/data/Methodist/traces/preprocessed"
 
 ### GET NAMES OF FILES ########################################################
 
