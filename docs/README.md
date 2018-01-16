@@ -41,7 +41,7 @@ We crop the images into non-overlapping squares of 256 by 256 pixels, to be pass
 
 Before cropping, the photo and trace images are extended to a multiple of 256 pixels in length and width, creating additional white (blank) space around the placenta. This allows the entire placenta to be reconstructed, but also generates many blank or mostly-blank squares which are not informative for training.  In order to diminish the number of the blank or mostly-blank squares, we randomly remove 80\% of the images under 10 KB in size using [`removeBlankSquares.py`](https://github.com/canghel/placenta/blob/master/clean-code/removeBlankSquares.py). 
 
-## `pix2pix` Conditional Generative Adversarial Network (cGAN)
+## Conditional Generative Adversarial Network (cGAN)
 
 Recent advances in both computational resources and in deep learning research motivated us to revisit the neural network approach to blood vessel extraction from a new perspective.  The previous approach [[2](#Almoussa2011)] classified pixels of the image as "vessel" or "non-vessel" based on calculated features.  
 
@@ -94,7 +94,7 @@ For the figure below we use re-patched _overlapping_ 256 <a href="https://www.co
 
 <img align="center" src="img/mccPlots/mccValuesForTestHist.png" height="400"  class="inline"/> 
 
-To check the generalizability of the neural network, the boxplot below compares the MCC value for reconstructed images of the placentas in the training, validation, and test set.  The code is in [`plotDiagnostics.R`](https://github.com/canghel/placenta/blob/master/clean-code/plotDiagnostics.R) and uses the [Boutros Lab plotting general](labs.oicr.on.ca/Boutros-lab/software/bpg) package.  
+To check the generalizability of the neural network, the boxplot below compares the MCC value for reconstructed images of the placentas in the training, validation, and test set.  The code is in [`plotDiagnostics.R`](https://github.com/canghel/placenta/blob/master/clean-code/plotDiagnostics.R) and uses the [Boutros Lab plotting general](https://labs.oicr.on.ca/boutros-lab/software/bpg) package.  
 
 <img align="center" src="img/mccPlots/mccValuesBoxPlot.png" height="400"  class="inline"/>
 
@@ -130,11 +130,11 @@ The details for the cGAN are as follows:
 
 *   Intel Xeon Processor (10M Cache, 3.50 Ghz) CentOS 6.5 64bit with NVIDIA GeForce GTX 1080 GPU. 
 
-*   Training required 8 hours, but once trained the testing time was minimal (4m 15 s for all  7124 overlapping 265 $\times$ 256 cropped test images)
+*   Training required 8 hours, but once trained the testing time was minimal (4m 15 s for all  7124 overlapping 256 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\times" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\times" title="\times" /></a> 256 cropped test images)
 
 For plotting, we used 
 
-*    R version 3.3.3 (2017-03-06) and the [Boutros Lab plotting general](labs.oicr.on.ca/Boutros-lab/software/bpg) 5.3.4 package.
+*    R version 3.3.3 (2017-03-06) and the [Boutros Lab plotting general](https://labs.oicr.on.ca/boutros-lab/software/bpg) 5.3.4 package.
 
 ## Authors
 
@@ -151,10 +151,10 @@ We gratefully acknowledge the support of the following organizations and persons
 
 *	The project was part of the [MBI Women Advancing Mathematical Biology: Understanding Complex Biological Systems with Mathematics 2017 Workshop](https://mbi.osu.edu/event/?id=1067 ).  The Mathematical Biosciences Institute sponsored the workshop, with support from Association for Women in Mathematics, The Society for Mathematical Biology, and Microsoft Research.
 
+*	CVA would like to thank Nelson Johansen for help in the GPU and Torch setup, and for discussions on cGANs.  Gerald Quon also allowed some work time in October to December 2017 to be devoted to this project. 
+
 *   Over the course of the project, we received biology expertise and support from Dr. Carolyn Salafia, Ruchit Shah, Terri Girardi, Dr. George Merz, and Dr. Richard K. Miller.
 
 *	The authors wish to thank the following people who contributed to the collection of the placentas in the National Children's Study Placenta Consortium: CJ Stodgell, L Salamone, LI Ruffolo, A Penmetsa, P Weidenborner (University of Rochester), J Culhane, S Wadlinger, M Pacholski,  MA Kent, L Green (University of Pennsylvania),  R Wapner, C Torres, J Perou (Columbia University), P Landrigan,  J Chen,  L Lambertini,  L Littman,  P Sheffield, A Golden, J Gilbert, C Lendor, S Allen, K Mantilla, Y Ma (Ichan School of Medicine),  S Leuthner, S Szabo (Medical College of Wisconsin), JL Dalton, D  Misra (Placenta Analytics), N Thiex, K Gutzman, A Martin, B Specker (South Dakota University),  J Swanson, C Holliday,  J Butler (University of California at Irvine),  A LI, RMAP S Dassanayake, J Nanes, Y Xia (University of Illinois at Chicago),  JC Murray,  TD Busch, J Rigdon (University of Iowa), Kjersti Aagaard, A Harris (Baylor College of Medicine), TH Darrah, E Campbell (Boston University), N Dole, J Thorp,  B Eucker, C Bell (University of North Carolina at Chapel Hill), EB Clark, MW Varner, E Taggart, J Billy, S Stradling, J Leavitt, W Bell, S Waterfall (University of Utah), B O'Brien, M Layton, D Todd, K Wilson, MS Durkin,  M-N Sandoval (Westat, Inc).
-
-*	CVA would like to thank Nelson Johansen for help in the GPU and Torch setup, and for discussions on cGANs.  Gerald Quon also allowed some work time in October to December 2017 to be devoted to this project. 
 
 *	Most importantly, we thank the participants who donated their placentas.
