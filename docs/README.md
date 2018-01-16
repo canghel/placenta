@@ -14,11 +14,11 @@ As a prerequisite to our first aim, we must extract the vascular network structu
 
 The following is the documentation of the code for the neural network portion of our project.  For the full background, methodolgy and results, please see the following two articles (submitted):
 
-*     C. Anghel, K. Archer, J.-M. Chang, A. Cochran, A. Radulescu, C.M. Salafia, R. Turner,
+>  C. Anghel, K. Archer, J.-M. Chang, A. Cochran, A. Radulescu, C.M. Salafia, R. Turner,
 K. Yacoubou Djuma, L. Zhong, "Placental vessel extraction using shearlets, laplacian eigenmaps
 and a conditional generative adversarial network," Springer, 2017
 
-*    C. Anghel, K. Archer, J.-M. Chang, A. Cochran, A. Radulescu, C.M. Salafia, R. Turner,
+>  C. Anghel, K. Archer, J.-M. Chang, A. Cochran, A. Radulescu, C.M. Salafia, R. Turner,
 K. Yacoubou Djuma, L. Zhong, "Simulations of the vascular network growth process for studying
 placenta structure and function associated with autism," Springer, 2017. 
 
@@ -41,7 +41,7 @@ We crop the images into non-overlapping squares of 256 by 256 pixels, to be pass
 
 Before cropping, the photo and trace images are extended to a multiple of 256 pixels in length and width, creating additional white (blank) space around the placenta. This allows the entire placenta to be reconstructed, but also generates many blank or mostly-blank squares which are not informative for training.  In order to diminish the number of the blank or mostly-blank squares, we randomly remove 80\% of the images under 10 KB in size using [`removeBlankSquares.py`](https://github.com/canghel/placenta/blob/master/clean-code/removeBlankSquares.py). 
 
-## Conditional Generative Adversarial Network (cGAN)
+## pix2pix Conditional Generative Adversarial Network (cGAN)
 
 Recent advances in both computational resources and in deep learning research motivated us to revisit the neural network approach to blood vessel extraction from a new perspective.  The previous approach [[2](#Almoussa2011)] classified pixels of the image as "vessel" or "non-vessel" based on calculated features.  
 
