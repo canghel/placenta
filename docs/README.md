@@ -12,15 +12,19 @@ As a prerequisite to our first aim, we must extract the vascular network structu
 
 *    improve the automatic extraction of the vascular network structure. 
 
-The following is the documentation of the code for the neural network portion of our project.  For the full background, methodolgy and results, please see the following two articles (submitted):
+The following is the documentation of the code for the neural network portion of our project.  For the full background, methodolgy and results, please see the following two articles (under review):
 
 >  C. Anghel, K. Archer, J.-M. Chang, A. Cochran, A. Radulescu, C.M. Salafia, R. Turner,
 K. Yacoubou Djuma, L. Zhong, "Placental vessel extraction using shearlets, laplacian eigenmaps
-and a conditional generative adversarial network," Springer, 2017
+and a conditional generative adversarial network," Springer, 2018
 
 >  C. Anghel, K. Archer, J.-M. Chang, A. Cochran, A. Radulescu, C.M. Salafia, R. Turner,
 K. Yacoubou Djuma, L. Zhong, "Simulations of the vascular network growth process for studying
-placenta structure and function associated with autism," Springer, 2017. 
+placenta structure and function associated with autism," Springer, 2018. 
+
+## Note
+
+Update, February 2018: The following pre-processing may change, as full-size images can be input into the `pix2pix` network, and cropped during training only.  However, there may be a trade-off, as standardizing all placenta images may also increase the amount of white space in the image. 
 
 ## Data Pre-processing
 
